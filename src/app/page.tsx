@@ -10,6 +10,7 @@ import { Clock, Plus, Send, Trash2 } from 'lucide-react'
 const Home = () => {
   const [tasks, setTasks] = useState([{ id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }])
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [cardMoved, setCardMoved] = useState(false);
 
   const addTask = () => {
     const newTask = { id: tasks.length + 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
@@ -55,6 +56,12 @@ const Home = () => {
     setIsSubmitted(true)
   }
 
+  const handleTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
+    if (event.propertyName === 'transform') {
+      setCardMoved(true);
+    }
+  }
+
   return (
     <div className="container mx-auto p-4 max-w-5xl">
       <div className="flex justify-between items-center mb-6">
@@ -65,7 +72,14 @@ const Home = () => {
         </div>
       </div>
       
-      <Card className={`transition-all duration-500 ease-in-out ${isSubmitted ? 'translate-x-full opacity-0' : ''}`}>
+      <Card 
+        className={
+          `transition-all duration-500 ease-in-out 
+          ${isSubmitted ? 'translate-x-full opacity-0' : ''} 
+          ${cardMoved ? 'absolute' : ''}
+        `}
+        onTransitionEnd={handleTransitionEnd}
+      >
         <CardContent className="space-y-4 pt-6">
           {tasks.map((task) => (
             <div key={task.id} className="flex flex-col md:flex-row items-start md:items-center gap-2 p-2 rounded-md">
@@ -127,9 +141,9 @@ const Home = () => {
         </CardFooter>
       </Card>
       
-      <div className="mt-4 flex justify-between">
+      <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
       <div className="invisible"></div>
-        {isSubmitted && (
+        {cardMoved && (
           <div className="text-center">
             <h2 className="text-2xl font-bold text-green-600">送信完了</h2>
             <p className="mt-2">業務報告が正常に送信されました。</p>
