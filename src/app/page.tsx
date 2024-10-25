@@ -7,12 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Clock, Plus, Send, Trash2 } from 'lucide-react'
 
-export default function Component() {
-  const [tasks, setTasks] = useState([{ id: 1, task: '', startTime: '09:00', endTime: '09:00', quantity: 0 }])
+const Home = () => {
+  const [tasks, setTasks] = useState([{ id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }])
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   const addTask = () => {
-    const newTask = { id: tasks.length + 1, task: '', startTime: '09:00', endTime: '09:00', quantity: 0 }
+    const newTask = { id: tasks.length + 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
     setTasks([...tasks, newTask])
   }
 
@@ -25,9 +25,34 @@ export default function Component() {
   }
 
   const handleSubmit = () => {
+
+    const chkList = tasks.filter(task => task.startTime >= task.endTime);
+    const chkList2 = tasks.filter(task => task.kensu === 0);
+    if(chkList.length + chkList2.length !== 0){
+        window.alert("入力内容を確認してください");
+        return
+    }
+
+    tasks.map((task) => {
+      const dateTime1 = new Date('2024-03-01 ' + task.startTime + ':00')
+      const dateTime2 = new Date('2024-03-01 ' + task.endTime + ':00')
+      const diff = dateTime2.getTime() - dateTime1.getTime(); 
+      const date = new Date()
+      const perHour = task.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (task.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
+      const newTask = {
+          "createDate": date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,'0') + "-" + String(date.getDate()).padStart(2,'0'),
+          "task": task.task,
+          "startTime": task.startTime,
+          "endTime": task.endTime,
+          "kensu": task.kensu,
+          "User": "常盤忠靖",
+          "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
+          "perHour": perHour,
+          "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))
+      }
+      console.log(newTask)
+    })
     setIsSubmitted(true)
-    // Here you would typically send the data to your backend
-    console.log('Submitting tasks:', tasks)
   }
 
   return (
@@ -78,8 +103,8 @@ export default function Component() {
                 </div>
                 <Input
                   type="number"
-                  value={task.quantity}
-                  onChange={(e) => updateTask(task.id, 'quantity', e.target.value)}
+                  value={task.kensu}
+                  onChange={(e) => updateTask(task.id, 'kensu', e.target.value)}
                   className="w-20"
                   min={0}
                 />
@@ -102,16 +127,18 @@ export default function Component() {
         </CardFooter>
       </Card>
       
-      <div className="mt-4 flex justify-end">
+      <div className="mt-4 flex justify-between">
+      <div className="invisible"></div>
+        {isSubmitted && (
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-green-600">送信完了</h2>
+            <p className="mt-2">業務報告が正常に送信されました。</p>
+          </div>
+        )}
         <Button className='border border-blue-900 hover:bg-gray-200' variant="secondary">リスト表示</Button>
       </div>
-      
-      {isSubmitted && (
-        <div className="mt-8 text-center">
-          <h2 className="text-2xl font-bold text-green-600">送信完了</h2>
-          <p className="mt-2">業務報告が正常に送信されました。</p>
-        </div>
-      )}
     </div>
   )
 }
+
+export default Home;
