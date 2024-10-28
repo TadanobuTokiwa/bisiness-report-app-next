@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useRouter } from 'next/navigation'
 
 const SendList = () => {
     const [startDate, setStartDate] = useState('2024-10-01')
@@ -16,6 +17,8 @@ const SendList = () => {
     const [task, setTask] = useState('ALL')
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
+
+    const router = useRouter();
 
     const allItems = useMemo(() => Array.from({ length: 35 }, (_, index) => ({
         date: `2024-10-${String(index + 1).padStart(2, '0')}`,
@@ -151,7 +154,9 @@ const SendList = () => {
             </Button>
         </div>
         <div>
-            <Button className='hover:bg-gray-200' variant="outline">戻る</Button>
+            <Button className='hover:bg-gray-200' variant="outline" onClick={() => router.back()}>
+                戻る
+            </Button>
         </div>
         </CardFooter>
         </Card>

@@ -6,14 +6,24 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Clock, Plus, Send, Trash2 } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const Home = () => {
   const [tasks, setTasks] = useState([{ id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [cardMoved, setCardMoved] = useState(false);
 
+  const router = useRouter();
+
   const addTask = () => {
-    const newTask = { id: tasks.length + 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
+    const newTask = { 
+      id: tasks.length + 1, 
+      task: '', 
+      startTime: tasks[tasks.length - 1].endTime, 
+      endTime: tasks[tasks.length - 1].endTime, 
+      kensu: 0 
+    };
     setTasks([...tasks, newTask])
   }
 
@@ -26,9 +36,8 @@ const Home = () => {
   }
 
   const handleSubmit = () => {
-
     const chkList = tasks.filter(task => task.startTime >= task.endTime);
-    const chkList2 = tasks.filter(task => task.kensu === 0);
+    const chkList2 = tasks.filter(task => task.task === "");
     if(chkList.length + chkList2.length !== 0){
         window.alert("入力内容を確認してください");
         return
@@ -68,13 +77,15 @@ const Home = () => {
         <h1 className="text-3xl font-bold">業務報告</h1>
         <div className="flex items-center gap-4">
           <span className="text-sm text-muted-foreground">ユーザー名: 常磐忠晴</span>
-          <Button className='hover:bg-gray-200' variant="outline" size="sm">ログアウト</Button>
+          <Button className='hover:bg-gray-200' variant="outline" size="sm" onClick={() => router.push("/login")}>
+            ログアウト
+          </Button>
         </div>
       </div>
       
       <Card 
         className={
-          `transition-all duration-500 ease-in-out 
+          `transition-all duration-500 ease-in-out
           ${isSubmitted ? 'translate-x-full opacity-0' : ''} 
           ${cardMoved ? 'absolute' : ''}
         `}
@@ -149,7 +160,11 @@ const Home = () => {
             <p className="mt-2">業務報告が正常に送信されました。</p>
           </div>
         )}
-        <Button className='border border-blue-900 hover:bg-gray-200' variant="secondary">リスト表示</Button>
+        <Button className='border border-blue-900 hover:bg-gray-200' variant="secondary">
+          <Link href={"/sendlist"}>
+            リスト表示
+          </Link>
+        </Button>
       </div>
     </div>
   )
