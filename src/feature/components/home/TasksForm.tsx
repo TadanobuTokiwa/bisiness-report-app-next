@@ -6,7 +6,9 @@ import { addTask, removeTask, resetTask, updateTask } from '@/store/slices/TaskF
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchTasks } from "@/lib/firebase/firebaseStoreFunctions";
+import { taskItemType } from "@/types/fiebaseDocTypes";
 
 interface updateTaskAction{
     id: number;
@@ -22,10 +24,19 @@ type ChildComponentProps = {
 const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
 
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [taskItems, setTaskItems] = useState<taskItemType[] | null>(null)
 
     const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     const { tasks } = useAppSelector((store) => store.tasks);
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        const fetchFirebase = async() => {
+            const t = await fetchTasks()
+            setTaskItems(t);
+        }
+        fetchFirebase();
+    },[])
 
     const editTask = ({id, field, value}: updateTaskAction) => {
         const action = {id, field, value}
@@ -77,8 +88,6 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
         dispatch(resetTask())
     }
 
-    console.log(tasks)
-
     return (
         <Card 
             className={
@@ -96,12 +105,18 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
                         onValueChange={(value) => editTask({id: task.id, field: 'task', value})}
                     >
                         <SelectTrigger className="w-full">
-                        <SelectValue placeholder="タスクを選択" />
+                            <SelectValue placeholder="タスクを選択" />
                         </SelectTrigger>
                         <SelectContent className='bg-gray-100'>
-                        <SelectItem value="task1">タスク1</SelectItem>
-                        <SelectItem value="task2">タスク2</SelectItem>
-                        <SelectItem value="task3">タスク3</SelectItem>
+                            {taskItems?.map((item,index) => {
+                                return(
+                                    <SelectItem 
+                                        key={index} 
+                                        value={String(item.id)} 
+                                        style={{"backgroundColor": item.color}}
+                                    >{item.taskName}</SelectItem>
+                                )
+                            })}
                         </SelectContent>
                     </Select>
                     <div className="flex flex-wrap md:flex-nowrap justify-around gap-2 w-full md:w-3/4">
