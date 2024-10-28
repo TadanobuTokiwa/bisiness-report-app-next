@@ -1,14 +1,14 @@
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Clock, Trash2, Plus, Send } from 'lucide-react'
+import { Clock, Trash2, Plus, Send, Loader } from 'lucide-react'
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { addTask, removeTask, resetTask, updateTask } from '@/store/slices/TaskForm';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { fetchTasks } from "@/lib/firebase/firebaseStoreFunctions";
-import { taskItemType } from "@/types/fiebaseDocTypes";
+import { addItem, fetchTasks } from "@/lib/firebase/firebaseStoreFunctions";
+import { postItemType, taskItemType } from "@/types/fiebaseDocTypes";
 
 interface updateTaskAction{
     id: number;
@@ -25,6 +25,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
 
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [taskItems, setTaskItems] = useState<taskItemType[] | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
 
     const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     const { tasks } = useAppSelector((store) => store.tasks);
@@ -64,14 +65,15 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
             window.alert("入力内容を確認してください");
             return
         }
-    
-        tasks.map((task) => {
+        
+        setLoading(true)
+        try{ tasks.map(async (task) => {
             const dateTime1 = new Date('2024-03-01 ' + task.startTime + ':00')
             const dateTime2 = new Date('2024-03-01 ' + task.endTime + ':00')
             const diff = dateTime2.getTime() - dateTime1.getTime(); 
             const date = new Date()
             const perHour = task.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (task.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
-            const newTask = {
+            const newTask: postItemType = {
                 "createDate": date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,'0') + "-" + String(date.getDate()).padStart(2,'0'),
                 "task": task.task,
                 "startTime": task.startTime,
@@ -82,10 +84,13 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
                 "perHour": perHour,
                 "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))
             }
-            console.log(newTask)
-        })
-        setIsSubmitted(true)
-        dispatch(resetTask())
+            await addItem(newTask)
+            setIsSubmitted(true)
+            dispatch(resetTask())
+        })} catch {
+            window.alert("エラーが発生しました");
+            setLoading(false);
+        }
     }
 
     return (
@@ -145,7 +150,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
                         className="w-20"
                         min={0}
                         />
-                        <Button variant="ghost" className="border rounded-xl hover:bg-gray-200" size="icon" onClick={() => trashHandler(task.id)}>
+                        <Button variant="ghost" className="border rounded-xl hover:bg-gray-200" size="icon" onClick={() => !loading ? trashHandler(task.id) : console.log("送信中です")}>
                             <Trash2 className="w-4 h-4" />
                         </Button>
                     </div>
@@ -153,14 +158,21 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
                 ))}
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button variant="outline" className='hover:bg-gray-200' onClick={() => addButtonHandler()}>
-                <Plus className="w-4 h-4 mr-2" />
-                追加
+                <Button variant="outline" className='hover:bg-gray-200' onClick={() => !loading ? addButtonHandler() : console.log("送信中です")}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    追加
                 </Button>
-                <Button className='border border-black text-white bg-sky-700 hover:bg-sky-800 ' onClick={handleSubmit}>
-                <Send className="w-4 h-4 mr-2" />
-                送信
-                </Button>
+                {loading ?
+                    <Button className='border border-black text-white bg-sky-700 hover:bg-sky-700'>
+                        <Loader className="w-4 h-4 mr-2 animate-spin" />
+                        送信中...
+                    </Button>
+                    :
+                    <Button className='border border-black text-white bg-sky-700 hover:bg-sky-800' onClick={handleSubmit}>
+                        <Send className="w-4 h-4 mr-2" />
+                        送信
+                    </Button>
+                }
             </CardFooter>
         </Card>
     )

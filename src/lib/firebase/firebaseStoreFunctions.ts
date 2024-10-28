@@ -1,6 +1,6 @@
-import { collection, DocumentData, getDocs, orderBy, query, where } from "firebase/firestore";
+import { addDoc, collection, DocumentData, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "./firebaseConfig";
-import { taskItemType } from "@/types/fiebaseDocTypes";
+import { postItemType, taskItemType } from "@/types/fiebaseDocTypes";
 
 export const fetchTasks = async () => {
     const q = query(
@@ -20,3 +20,7 @@ export const fetchTasks = async () => {
         }) as taskItemType
     });
 };
+
+export const addItem = async (newTask: postItemType) => {
+    await addDoc(collection(db, "task"), newTask)
+}
