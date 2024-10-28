@@ -1,6 +1,6 @@
 import { addDoc, collection, DocumentData, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "./firebaseConfig";
-import { postItemType, taskItemType } from "@/types/fiebaseDocTypes";
+import { postItemType, taskItemType } from "@/types/firebaseDocTypes";
 
 export const fetchTasks = async () => {
     const q = query(
