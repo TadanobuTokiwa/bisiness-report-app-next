@@ -85,7 +85,7 @@ const Home = () => {
       
       <Card 
         className={
-          `transition-all duration-500 ease-in-out
+          `transition-all duration-500 ease-in-out bg-slate-50
           ${isSubmitted ? 'translate-x-full opacity-0' : ''} 
           ${cardMoved ? 'absolute' : ''}
         `}

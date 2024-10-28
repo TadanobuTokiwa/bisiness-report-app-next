@@ -38,7 +38,7 @@ const SendList = () => {
     )
 
     return (
-        <Card className="m-4 shadow-lg">
+        <Card className="m-4 shadow-lg bg-slate-50">
         <CardHeader>
             <CardTitle>リスト</CardTitle>
         </CardHeader>
