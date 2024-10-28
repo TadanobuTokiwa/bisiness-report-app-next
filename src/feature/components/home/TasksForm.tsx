@@ -8,7 +8,7 @@ import { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { addItem, fetchTasks } from "@/lib/firebase/firebaseStoreFunctions";
-import { postItemType, taskItemType } from "@/types/fiebaseDocTypes";
+import { postItemType, taskItemType } from "@/types/firebaseDocTypes";
 
 interface updateTaskAction{
     id: number;
