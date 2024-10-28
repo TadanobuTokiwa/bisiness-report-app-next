@@ -45,7 +45,9 @@ const SendList = () => {
         <CardContent>
             <div className="grid gap-4 mb-4 sm:grid-cols-3 lg:grid-cols-4">
                 <div className="md:col-span-1 lg:col-span-1">
-                    <Label htmlFor="startDate">開始日</Label>
+                    <Label htmlFor="startDate">
+                        開始日<text className='ml-3 text-red-500 text-xs'>※必須</text>
+                    </Label>
                     <Input
                     type="date"
                     id="startDate"
@@ -54,7 +56,9 @@ const SendList = () => {
                     />
                 </div>
                 <div className="md:col-span-1 lg:col-span-1">
-                    <Label htmlFor="endDate">終了日</Label>
+                    <Label htmlFor="endDate">
+                        終了日<text className='ml-3 text-red-500 text-xs'>※必須</text>
+                    </Label>
                     <Input
                     type="date"
                     id="endDate"
@@ -70,8 +74,6 @@ const SendList = () => {
                     </SelectTrigger>
                     <SelectContent className='bg-gray-100'>
                         <SelectItem value="常盤忠靖">常盤忠靖</SelectItem>
-                        <SelectItem value="山田太郎">山田太郎</SelectItem>
-                        <SelectItem value="佐藤花子">佐藤花子</SelectItem>
                     </SelectContent>
                     </Select>
                 </div>
@@ -83,8 +85,6 @@ const SendList = () => {
                     </SelectTrigger>
                     <SelectContent className='bg-gray-100'>
                         <SelectItem value="ALL">全て</SelectItem>
-                        <SelectItem value="task1">タスク1</SelectItem>
-                        <SelectItem value="task2">タスク2</SelectItem>
                     </SelectContent>
                     </Select>
                 </div>
@@ -109,7 +109,7 @@ const SendList = () => {
                 <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className='bg-zinc-50'>
                 {currentItems.map((item, index) => (
                 <TableRow key={index}>
                     <TableCell>{item.date}</TableCell>
