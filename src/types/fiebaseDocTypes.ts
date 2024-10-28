@@ -5,3 +5,15 @@ export interface taskItemType {
     orderNum: number;
     taskName: string;
 }
+
+export interface postItemType {
+    createDate: string;
+    task: string;
+    startTime: string;
+    endTime: string;
+    kensu: number;
+    User: string;
+    workingHour: number;
+    perHour: number;
+    DateTimeNum: number;
+}
