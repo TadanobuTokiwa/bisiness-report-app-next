@@ -27,4 +27,5 @@ export interface listItemType{
     kensu: number,
     perHour: number,
     userName: string,
+    docID: string,
 }

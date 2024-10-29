@@ -6,7 +6,6 @@ type fetchItemsProps = {
     startDate: string;
     endDate: string;
     userName: string;
-    task: string
 }
 
 export const fetchTasks = async () => {
@@ -36,13 +35,14 @@ export const fetchItems = async ({startDate, endDate, userName}: fetchItemsProps
     const q = query(
         collection(db, "task"),
         where("User" , "==" , userName),
-        where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "0000")),
+        where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
         where("DateTimeNum", ">=", Number(startDate.replaceAll("-","") + "0000")),
         orderBy("DateTimeNum" , "asc")
     );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => {
         const data = doc.data() as DocumentData
+        const docID = doc.id
         return({
             date: data.createDate,
             task: data.task,
@@ -51,7 +51,8 @@ export const fetchItems = async ({startDate, endDate, userName}: fetchItemsProps
             workingHour: data.workingHour,
             kensu: data.kensu,
             perHour: data.perHour,
-            userName: data.user,
+            userName: data.User,
+            docID
         }) as listItemType
     });
 }
