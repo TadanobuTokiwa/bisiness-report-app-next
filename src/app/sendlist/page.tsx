@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { useRouter } from 'next/navigation'
-import { fetchItems, fetchTasks } from '@/lib/firebase/firebaseStoreFunctions'
+import { updateItem, fetchItems, fetchTasks } from '@/lib/firebase/firebaseStoreFunctions'
 import { listItemType, taskItemType } from '@/types/firebaseDocTypes'
 import { downloadCSV } from '@/lib/CSVdownloader'
 
@@ -79,13 +79,37 @@ const SendList = () => {
         downloadCSV(props)
     }
 
-    const handleEditSave = () => {
-        console.log(editingItem);
+    const handleEditSave = async() => {
+        const {newItem, error} = await updateItem(editingItem!)
+        
+        if(error && !newItem){
+            window.alert("エラーが発生しました。")
+            return
+        }
+
+        const updateTask = {
+            date: newItem.createDate,
+            task: newItem.task,
+            startTime: newItem.startTime,
+            endTime: newItem.endTime,
+            workingHour: newItem.workingHour,
+            kensu: newItem.kensu,
+            perHour: newItem.perHour,
+            userName: editingItem!.userName,
+            docID: editingItem!.docID
+        }
+
         setIsEditDialogOpen(false);
+        setAllItems(prevItems =>
+            prevItems.map(item =>
+                item.docID === updateTask!.docID ? { ...updateTask } : { ...item }
+            )
+        );
     }
 
     const editButtonHandler = (searchId: string) => {
         const targetItem = allItems.filter(item => item.docID === searchId)[0];
+        if(!targetItem) return
         setEditingItem(targetItem);
         setIsEditDialogOpen(true);
     }
