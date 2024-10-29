@@ -17,3 +17,15 @@ export interface postItemType {
     perHour: number;
     DateTimeNum: number;
 }
+
+export interface listItemType{
+    date: string;
+    task: string,
+    startTime: string,
+    endTime: string,
+    workingHour: number,
+    kensu: number,
+    perHour: number,
+    userName: string,
+    docID: string,
+}

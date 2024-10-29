@@ -1,6 +1,12 @@
-import { addDoc, collection, DocumentData, getDocs, orderBy, query, where } from "firebase/firestore";
-import { db } from "./firebaseConfig";
-import { postItemType, taskItemType } from "@/types/firebaseDocTypes";
+import { addDoc, collection, doc, DocumentData, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { db } from "../../services/firebaseConfig";
+import { listItemType, postItemType, taskItemType } from "@/types/firebaseDocTypes";
+
+type fetchItemsPropsType = {
+    startDate: string;
+    endDate: string;
+    userName: string;
+}
 
 export const fetchTasks = async () => {
     const q = query(
@@ -23,4 +29,61 @@ export const fetchTasks = async () => {
 
 export const addItem = async (newTask: postItemType) => {
     await addDoc(collection(db, "task"), newTask)
+}
+
+export const fetchItems = async ({startDate, endDate, userName}: fetchItemsPropsType) => {
+    const q = query(
+        collection(db, "task"),
+        where("User" , "==" , userName),
+        where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
+        where("DateTimeNum", ">=", Number(startDate.replaceAll("-","") + "0000")),
+        orderBy("DateTimeNum" , "asc")
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data() as DocumentData
+        const docID = doc.id
+        return({
+            date: data.createDate,
+            task: data.task,
+            startTime: data.startTime,
+            endTime: data.endTime,
+            workingHour: data.workingHour,
+            kensu: data.kensu,
+            perHour: data.perHour,
+            userName: data.User,
+            docID
+        }) as listItemType
+    });
+}
+
+export const updateItem = async(editItem: listItemType) => {
+    const docRef = doc(db, "task", editItem.docID);
+
+    const dateTime1 = new Date('2024-03-01 ' + editItem.startTime + ':00')
+    const dateTime2 = new Date('2024-03-01 ' + editItem.endTime + ':00')
+    const diff = dateTime2.getTime() - dateTime1.getTime(); 
+    const workingHour = Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3);
+    const dateTimeNum = Number(String(editItem.date.replaceAll("-","")) + String(editItem.startTime.replaceAll(":","")))
+    const perHour = editItem.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (editItem.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
+    
+    const newItem = {
+        createDate: editItem.date,
+        startTime: editItem.startTime,
+        endTime: editItem.endTime,
+        kensu: editItem.kensu,
+        task: editItem.task,
+        workingHour,
+        perHour,
+        dateTimeNum,
+    }
+
+    let error: boolean = false
+    try { 
+        await updateDoc(docRef, newItem);
+    } catch {
+        error = true
+    } finally {
+        return {newItem, error};
+    }
 }

@@ -1,0 +1,33 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "task",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "User",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "DateTimeNum",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "taskManager",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "chk",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "orderNum",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
