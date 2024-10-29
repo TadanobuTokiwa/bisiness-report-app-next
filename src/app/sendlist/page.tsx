@@ -130,7 +130,7 @@ const SendList = () => {
             <div className="grid gap-4 mb-4 sm:grid-cols-3 lg:grid-cols-4">
                 <div className="md:col-span-1 lg:col-span-1">
                     <Label htmlFor="startDate">
-                        開始日<text className='ml-3 text-red-500 text-xs'>※必須</text>
+                        開始日<strong className='ml-3 text-red-500 text-xs'>※必須</strong>
                     </Label>
                     <Input
                     type="date"
@@ -141,7 +141,7 @@ const SendList = () => {
                 </div>
                 <div className="md:col-span-1 lg:col-span-1">
                     <Label htmlFor="endDate">
-                        終了日<text className='ml-3 text-red-500 text-xs'>※必須</text>
+                        終了日<strong className='ml-3 text-red-500 text-xs'>※必須</strong>
                     </Label>
                     <Input
                     type="date"
@@ -232,7 +232,7 @@ const SendList = () => {
         <CardFooter className="flex justify-between">
         <div className={isLoading ? "" : "invisible"}>
             <Loader className="w-4 h-4 mr-2 animate-spin" />
-            <text className='font-bold invisible sm:inline'>Loading...</text>
+            <strong className='font-bold invisible sm:inline'>Loading...</strong>
         </div>
         <div className="flex items-center gap-2">
             {
@@ -245,7 +245,7 @@ const SendList = () => {
                         disabled={currentPage === 1}
                     >
                         <ChevronLeft className="h-4 w-4" />
-                        <text className='hidden sm:inline'>前へ</text>
+                        <strong className='hidden sm:inline'>前へ</strong>
                     </Button>
                     <span className="text-sm">
                         {currentPage} / {totalPages}
@@ -256,7 +256,7 @@ const SendList = () => {
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                         disabled={currentPage === totalPages}
                     >
-                        <text className='hidden sm:inline'>次へ</text>
+                        <strong className='hidden sm:inline'>次へ</strong>
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </>
