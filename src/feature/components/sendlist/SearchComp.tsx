@@ -12,10 +12,11 @@ type ChildComponentProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     setAllItems: React.Dispatch<React.SetStateAction<listItemType[]>>;
     taskItems: taskItemType[] | null;
-    allItems: listItemType[]
+    allItems: listItemType[];
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems}: ChildComponentProps) => {
+const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentPage}: ChildComponentProps) => {
     const [startDate, setStartDate] = useState<string>('2024-10-01');
     const [endDate, setEndDate] = useState<string>('2024-10-31');
     const [userName, setUserName] = useState<string>('常盤忠靖');
@@ -39,6 +40,7 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems}: ChildCompo
         const items = await fetchItems(props)
         setAllItems(items)
         setIsLoading(false);
+        setCurrentPage(1);
     }
 
     const handleDownload = () => {

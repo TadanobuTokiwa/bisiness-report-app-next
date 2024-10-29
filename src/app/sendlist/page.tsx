@@ -44,6 +44,7 @@ const SendList = () => {
                 setAllItems={setAllItems} 
                 taskItems={taskItems}
                 allItems={allItems}
+                setCurrentPage={setCurrentPage}
             />
             <TasksTable
                 currentItems={currentItems}
