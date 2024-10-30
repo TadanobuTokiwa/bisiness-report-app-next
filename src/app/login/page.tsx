@@ -7,10 +7,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Label } from "@/components/ui/label"
 import { fetchLoginPaths, signInWithGoogle } from '@/lib/firebase/firebaseStoreFunctions'
 import { useRouter } from 'next/navigation'
+import Cookies from 'js-cookie';
 
 const Login = () => {
     const [loginKey, setLoginKey] = useState('')
     const [userName, setUserName] = useState<string | null | undefined>(null)
+    const [token, setToken] = useState<string>("")
 
     const router = useRouter();
 
@@ -22,6 +24,9 @@ const Login = () => {
         }
 
         setUserName(user?.displayName)
+
+        const userToken = await user.getIdToken();
+        setToken(userToken)
     }
 
     const handleLogin = async() => {
@@ -35,6 +40,7 @@ const Login = () => {
         }
 
         if(loginPath[0].id === 2){
+            Cookies.set('__session', token, { expires: 1 });
             router.push("/")
         }
     }

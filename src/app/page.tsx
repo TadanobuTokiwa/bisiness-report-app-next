@@ -7,11 +7,20 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { store } from '@/store/store';
 import TasksForm from '@/feature/components/home/TasksForm';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/services/firebaseConfig';
+import Cookies from 'js-cookie';
 
 const Home = () => {
   const [cardMoved, setCardMoved] = useState<boolean>(false);
 
   const router = useRouter();
+
+  const logout = async() => {
+    await signOut(auth)
+    Cookies.remove('__session');
+    router.push('/login');
+  }
 
   return (
     <Provider store={store}>
@@ -20,7 +29,7 @@ const Home = () => {
           <h1 className="text-3xl font-bold">業務報告</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">ユーザー名: 常磐忠晴</span>
-            <Button className='hover:bg-gray-200' variant="outline" size="sm" onClick={() => router.push("/login")}>
+            <Button className='hover:bg-gray-200' variant="outline" size="sm" onClick={() => logout()}>
               ログアウト
             </Button>
           </div>

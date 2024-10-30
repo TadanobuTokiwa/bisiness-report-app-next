@@ -1,7 +1,8 @@
 import { addDoc, collection, doc, DocumentData, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { db, googleProvider, auth } from "../../services/firebaseConfig";
 import { listItemType, postItemType, taskItemType } from "@/types/firebaseDocTypes";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
+import Cookies from 'js-cookie';
 
 type fetchItemsPropsType = {
     startDate: string;
@@ -112,3 +113,12 @@ export const fetchLoginPaths = async () => {
         })
     });
 }
+
+export const logout = async () => {
+    try {
+        await signOut(auth);
+        Cookies.remove('__session');
+    } catch (error) {
+        console.error("Error signing out:", error);
+    }
+};
