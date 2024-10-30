@@ -33,7 +33,6 @@ const Login = () => {
     }
 
     const handleLogin = async() => {
-        if(!userName) return
         const items = await fetchLoginPaths()
         const loginPath = items.filter(item => item.accountname === loginKey)
 
@@ -42,9 +41,19 @@ const Login = () => {
             return
         }
 
-        if(loginPath[0].id === 2){
+        if(!token){
+            window.alert("Googleアカウントのログインを行ってください")
+            return
+        }
+
+        if(loginPath[0].id === 2 && token){
             Cookies.set('__session', token, { expires: 1 });
             router.push("/")
+        }
+
+        if(loginPath[0].id === 1 && token){
+            Cookies.set('__session', token, { expires: 1 });
+            router.push("/maneger/manegerMenu")
         }
     }
 

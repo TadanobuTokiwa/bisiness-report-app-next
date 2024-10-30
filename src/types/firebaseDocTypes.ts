@@ -4,6 +4,7 @@ export interface taskItemType {
     id: number;
     orderNum: number;
     taskName: string;
+    docID: string;
 }
 
 export interface postItemType {
