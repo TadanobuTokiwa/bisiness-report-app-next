@@ -18,7 +18,8 @@ const ListFooter = ({isLoading, totalPages, currentPage, setCurrentPage}: ChildC
         <CardFooter className="flex justify-between">
         <div className={isLoading ? "" : "invisible"}>
             <Loader className="w-4 h-4 mr-2 animate-spin" />
-            <strong className='font-bold invisible sm:inline'>Loading...</strong>
+            <strong className='font-bold hidden sm:inline'>Loading...</strong>
+            <strong className='font-bold invisible sm:hidden'>.neverDisp.</strong>
         </div>
         <div className="flex items-center gap-2">
             {

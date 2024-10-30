@@ -7,20 +7,33 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { store } from '@/store/store';
 import TasksForm from '@/feature/components/home/TasksForm';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/services/firebaseConfig';
+import Cookies from 'js-cookie';
+import { useAuth } from '@/context/AuthContext';
+import ProtectedRoute from './protectedRoute';
 
 const Home = () => {
   const [cardMoved, setCardMoved] = useState<boolean>(false);
 
   const router = useRouter();
+  const { userName } = useAuth();
+
+  const logout = async() => {
+    await signOut(auth)
+    Cookies.remove('__session');
+    router.push('/login');
+  }
 
   return (
+    <ProtectedRoute>
     <Provider store={store}>
       <div className="container mx-auto p-4 max-w-5xl">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">業務報告</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">ユーザー名: 常磐忠晴</span>
-            <Button className='hover:bg-gray-200' variant="outline" size="sm" onClick={() => router.push("/login")}>
+            <span className="text-sm text-muted-foreground">{`ユーザー名: ${userName}`}</span>
+            <Button className='hover:bg-gray-200' variant="outline" size="sm" onClick={() => logout()}>
               ログアウト
             </Button>
           </div>
@@ -42,6 +55,7 @@ const Home = () => {
         </div>
       </div>
     </Provider>
+    </ProtectedRoute>
   )
 }
 

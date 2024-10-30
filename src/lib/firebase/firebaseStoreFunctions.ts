@@ -1,6 +1,8 @@
 import { addDoc, collection, doc, DocumentData, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
-import { db } from "../../services/firebaseConfig";
+import { db, googleProvider, auth } from "../../services/firebaseConfig";
 import { listItemType, postItemType, taskItemType } from "@/types/firebaseDocTypes";
+import { signInWithPopup, signOut } from "firebase/auth";
+import Cookies from 'js-cookie';
 
 type fetchItemsPropsType = {
     startDate: string;
@@ -87,3 +89,36 @@ export const updateItem = async(editItem: listItemType) => {
         return {newItem, error};
     }
 }
+
+export const signInWithGoogle = async () => {
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        return user;
+    } catch (error) {
+        console.error("Error signing in with Google", error);
+    }
+}
+
+export const fetchLoginPaths = async () => {
+    const q = query(
+        collection(db, "loginAccount")
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data() as DocumentData
+        return({
+            id: data.id,
+            accountname: data.accountname
+        })
+    });
+}
+
+export const logout = async () => {
+    try {
+        await signOut(auth);
+        Cookies.remove('__session');
+    } catch (error) {
+        console.error("Error signing out:", error);
+    }
+};

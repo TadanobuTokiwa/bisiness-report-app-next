@@ -12,13 +12,15 @@ type ChildComponentProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     setAllItems: React.Dispatch<React.SetStateAction<listItemType[]>>;
     taskItems: taskItemType[] | null;
-    allItems: listItemType[]
+    allItems: listItemType[];
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+    userName: string
 };
 
-const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems}: ChildComponentProps) => {
+const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentPage, userName}: ChildComponentProps) => {
     const [startDate, setStartDate] = useState<string>('2024-10-01');
     const [endDate, setEndDate] = useState<string>('2024-10-31');
-    const [userName, setUserName] = useState<string>('常盤忠靖');
+    const [searchName, setSearchName] = useState<string>(userName);
     const [task, setTask] = useState('ALL');
 
     const searchClickHandler = async() => {
@@ -34,11 +36,12 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems}: ChildCompo
         const props = {
             startDate,
             endDate,
-            userName
+            userName: searchName
         }
         const items = await fetchItems(props)
         setAllItems(items)
         setIsLoading(false);
+        setCurrentPage(1);
     }
 
     const handleDownload = () => {
@@ -90,12 +93,12 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems}: ChildCompo
             </div>
             <div className="md:col-span-1 lg:col-span-1">
                 <Label htmlFor="employee">従業員名</Label>
-                <Select value={userName} onValueChange={setUserName}>
+                <Select value={searchName} onValueChange={setSearchName}>
                 <SelectTrigger id="employee">
                     <SelectValue placeholder="従業員を選択" />
                 </SelectTrigger>
                 <SelectContent className='bg-gray-100'>
-                    <SelectItem value="常盤忠靖">常盤忠靖</SelectItem>
+                    <SelectItem value={userName}>{userName}</SelectItem>
                 </SelectContent>
                 </Select>
             </div>

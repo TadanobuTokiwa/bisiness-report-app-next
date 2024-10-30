@@ -12,7 +12,8 @@ export const downloadCSV = ({data, taskItems, filename}: propsType) => {
     const headers = ["日付", "業務項目", "開始時間", "終了時間", "業務時間", "件数", "時速", "従業員名"];
 
     const rows = data.map((item) => {
-        const taskName = taskItems?.filter(taskItem => String(taskItem.id) === item.task)[0].taskName
+        const taskItem = taskItems?.filter(taskItem => String(taskItem.id) === item.task)
+        const taskName = taskItem.length === 1 ? taskItem[0].taskName ? taskItem[0].taskName : "" : ""
         return ([
             item.date,
             taskName,
