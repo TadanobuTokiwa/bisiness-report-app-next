@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { addItem, fetchTasks } from "@/lib/firebase/firebaseStoreFunctions";
 import { postItemType, taskItemType } from "@/types/firebaseDocTypes";
+import { useAuth } from "@/context/AuthContext";
 
 interface updateTaskAction{
     id: number;
@@ -30,6 +31,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
     const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     const { tasks } = useAppSelector((store) => store.tasks);
     const dispatch = useDispatch()
+    const { userName } = useAuth();
 
     useEffect(() => {
         const fetchFirebase = async() => {
@@ -65,6 +67,10 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
             window.alert("入力内容を確認してください");
             return
         }
+        if(!userName){
+            window.alert("ユーザー情報を確認してください");
+            return
+        }
         
         setLoading(true)
         try{ tasks.map(async (task) => {
@@ -79,7 +85,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
                 "startTime": task.startTime,
                 "endTime": task.endTime,
                 "kensu": task.kensu,
-                "User": "常盤忠靖",
+                "User": userName,
                 "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
                 "perHour": perHour,
                 "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))

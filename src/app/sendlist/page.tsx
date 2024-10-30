@@ -9,6 +9,8 @@ import SearchComp from '@/feature/components/sendlist/SearchComp'
 import TasksTable from '@/feature/components/sendlist/TasksTable'
 import ListFooter from '@/feature/components/sendlist/ListFooter'
 import ItemEditDialog from '@/feature/components/sendlist/ItemEditDialog'
+import ProtectedRoute from '../protectedRoute'
+import { useAuth } from '@/context/AuthContext'
 
 const SendList = () => {
     const [allItems, setAllItems] = useState<listItemType[]>([]);
@@ -17,6 +19,7 @@ const SendList = () => {
     const [editingItem, setEditingItem] = useState<listItemType | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+    const { userName } = useAuth();
     const itemsPerPage = 10
 
     useEffect(() => {
@@ -34,7 +37,7 @@ const SendList = () => {
     )
 
     return (
-        <>
+        <ProtectedRoute>
         <Card className="m-4 shadow-lg bg-slate-50">
         <CardHeader>
             <CardTitle>リスト</CardTitle>
@@ -45,6 +48,7 @@ const SendList = () => {
                 taskItems={taskItems}
                 allItems={allItems}
                 setCurrentPage={setCurrentPage}
+                userName={userName!}
             />
             <TasksTable
                 currentItems={currentItems}
@@ -69,7 +73,7 @@ const SendList = () => {
                 taskItems={taskItems}
             />
         </Dialog>
-        </>
+        </ProtectedRoute>
     )
 }
 

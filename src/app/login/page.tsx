@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { fetchLoginPaths, signInWithGoogle } from '@/lib/firebase/firebaseStoreFunctions'
+import { fetchLoginPaths } from '@/lib/firebase/firebaseStoreFunctions'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
+import { signInWithPopup } from 'firebase/auth'
+import { auth, googleProvider } from '@/services/firebaseConfig'
 
 const Login = () => {
     const [loginKey, setLoginKey] = useState('')
@@ -17,7 +19,8 @@ const Login = () => {
     const router = useRouter();
 
     const handleGoogleLogin = async() => {
-        const user = await signInWithGoogle();
+        const result = await signInWithPopup(auth, googleProvider)
+        const user = result.user
         if(!user?.email || user?.email.slice(-10) !== "@rext.work"){
             window.alert("rextのアカウントを使用してください")
             return
