@@ -8,7 +8,7 @@ import { auth } from "@/services/firebaseConfig"
 import { signOut } from "firebase/auth"
 import { useRouter } from "next/navigation"
 import Cookies from 'js-cookie';
-import ProtectedRoute from "../protectedRoute"
+import ProtectedRoute from "../../protectedRoute"
 
 const ManagerMenu = () => {
 
@@ -38,7 +38,7 @@ const ManagerMenu = () => {
                         </div>
                         <Button 
                             className="w-full border border-gray-400 bg-gray-50 hover:bg-gray-200" 
-                            onClick={() => router.push("/taskManagerment")}>
+                            onClick={() => router.push("/maneger/taskManagement")}>
                             業務項目管理画面
                         </Button>
                         <Button 

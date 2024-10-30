@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import ProtectedRoute from '../protectedRoute'
+import ProtectedRoute from '../../protectedRoute'
 import { taskItemType } from '@/types/firebaseDocTypes'
 import { useRouter } from 'next/navigation'
 import { addTaskManager, fetchAllTasks, updateTaskManager } from '@/lib/firebase/firebaseStoreFunctions'
@@ -124,9 +124,10 @@ const TaskManagement = () => {
             if (window.confirm('変更が保存されていません。保存せずに戻りますか？')) {
                 setChangedItems([])
                 setAddedItems([])
-                router.push("/")
+                router.push("/maneger/manegerMenu")
             }
         }
+        router.push("/maneger/manegerMenu")
     }  
 
     return (
@@ -145,7 +146,7 @@ const TaskManagement = () => {
                         <TableHead>作業項目名 (最大12文字)</TableHead>
                         <TableHead>背景色</TableHead>
                         <TableHead className="text-center">表示</TableHead>
-                        <TableHead>編集</TableHead>
+                        <TableHead></TableHead>
                     </TableRow>
                     </TableHeader>
                     <TableBody className='bg-white'>
@@ -161,7 +162,7 @@ const TaskManagement = () => {
                                 style={{ backgroundColor: task!.color }}
                                 />
                             </TableCell>
-                            <TableCell className="w-[80px] text-center">{task!.chk ? "表示" : "非表示"}</TableCell>
+                            <TableCell className={`w-[80px] text-center ${task!.chk ? "" : "text-red-500 font-bold"}`}>{task!.chk ? "表示" : "非表示"}</TableCell>
                             <TableCell className="w-[100px]">
                                 <Button className='hover:bg-slate-100' variant="outline" size="sm" onClick={() => handleEdit(task!)}>
                                 編集
