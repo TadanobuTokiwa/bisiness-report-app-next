@@ -9,7 +9,6 @@ import TasksTable from '@/feature/components/sendlist/TasksTable'
 import ListFooter from '@/feature/components/sendlist/ListFooter'
 import ItemEditDialog from '@/feature/components/sendlist/ItemEditDialog'
 import ProtectedRoute from '../../protectedRoute'
-import { useAuth } from '@/context/AuthContext'
 import { useTasks } from '@/hooks/useTasks'
 
 const SendList = () => {
@@ -18,11 +17,11 @@ const SendList = () => {
     const [editingItem, setEditingItem] = useState<listItemType | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
-    const { userName } = useAuth();
     const itemsPerPage = 10
 
     const { data } = useTasks();
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
+    const allTaskItems: taskItemType[] = data ? data : []
 
     const totalPages = Math.ceil(allItems.length / itemsPerPage)
     const currentItems = allItems.slice(
@@ -42,14 +41,14 @@ const SendList = () => {
                 taskItems={taskItems}
                 allItems={allItems}
                 setCurrentPage={setCurrentPage}
-                userName={userName!}
+                userName="ALL"
             />
             <TasksTable
                 currentItems={currentItems}
-                taskItems={taskItems}
+                taskItems={allTaskItems}
                 setEditingItem={setEditingItem}
                 setIsEditDialogOpen={setIsEditDialogOpen}
-                manager={false}
+                manager={true}
             />
             <ListFooter
                 isLoading={isLoading}

@@ -43,7 +43,7 @@ const ManagerMenu = () => {
                         </Button>
                         <Button 
                             className="w-full border border-gray-400 bg-gray-50 hover:bg-gray-200" 
-                            onClick={() => console.log("")}>
+                            onClick={() => router.push("/manager/sendlist")}>
                             全従業員リスト
                         </Button>
                         <Button 

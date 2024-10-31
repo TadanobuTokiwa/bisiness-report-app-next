@@ -4,7 +4,7 @@ import { CardContent} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
+import { fetchAllUserItems, fetchItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
 import { downloadCSV } from '@/lib/CSVdownloader'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
 
@@ -33,23 +33,32 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
         }
 
         setIsLoading(true);
-        if(task === "ALL"){
+        if(searchName === "ALL"){
             const props = {
                 startDate,
-                endDate,
-                userName: searchName
+                endDate
             }
-            const items = await fetchItems(props)
-            setAllItems(items)
+            const item = await fetchAllUserItems(props)
+            setAllItems(item)
         }else{
-            const props = {
-                startDate,
-                endDate,
-                userName: searchName,
-                task
+            if(task === "ALL"){
+                const props = {
+                    startDate,
+                    endDate,
+                    userName: searchName
+                }
+                const items = await fetchItems(props)
+                setAllItems(items)
+            }else{
+                const props = {
+                    startDate,
+                    endDate,
+                    userName: searchName,
+                    task
+                }
+                const items = await fetchTaskFilterdItems(props)
+                setAllItems(items)
             }
-            const items = await fetchTaskFilterdItems(props)
-            setAllItems(items)
         }
         setIsLoading(false);
         setCurrentPage(1);
@@ -120,7 +129,7 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
                     <SelectValue placeholder="業務項目を選択" />
                 </SelectTrigger>
                 <SelectContent className='bg-gray-100'>
-                    <SelectItem value="ALL">全て</SelectItem>
+                    <SelectItem value="ALL">ALL</SelectItem>
                     {taskItems.map(item => {
                         return(
                             <SelectItem 

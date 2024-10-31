@@ -8,9 +8,10 @@ type ChildComponentProps = {
     taskItems: taskItemType[];
     setEditingItem: React.Dispatch<React.SetStateAction<listItemType | null>>;
     setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    manager: boolean
 };
 
-const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpen}: ChildComponentProps) => {
+const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpen, manager}: ChildComponentProps) => {
 
     const editButtonHandler = (searchId: string) => {
         const targetItem = currentItems.filter(item => item.docID === searchId)[0];
@@ -38,7 +39,7 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
             <TableBody className='bg-zinc-50'>
                 {currentItems.map((item, index) => {
                     const taskName = taskItems?.filter(taskItem => String(taskItem.id) === item.task)[0].taskName
-                    const disableEdit = new Date(item.date).toDateString() !== new Date().toDateString()
+                    const disableEdit = !manager && new Date(item.date).toDateString() !== new Date().toDateString()
                     return (
                         <TableRow key={index} className="hover:bg-gray-200">
                             <TableCell>{item.date}</TableCell>
