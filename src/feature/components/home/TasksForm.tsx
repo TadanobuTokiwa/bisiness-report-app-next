@@ -34,7 +34,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
     const { userName } = useAuth();
 
     const { data } = useTasks();
-    const taskItems: taskItemType[] | undefined = data
+    const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
 
     const editTask = ({id, field, value}: updateTaskAction) => {
         const action = {id, field, value}

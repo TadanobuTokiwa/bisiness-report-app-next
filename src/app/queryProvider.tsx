@@ -9,7 +9,7 @@ const QueryProvider = ({ children }: { children: React.ReactNode }) => {
         defaultOptions: {
             queries: {
                 retry: 1, // エラー発生時のリトライ回数
-                staleTime: 1000 * 60 * 5, // キャッシュの有効時間
+                staleTime: 1000 * 60 * 60 * 24 * 7, // キャッシュの有効時間
                 refetchOnWindowFocus: false, // フォーカス時の再フェッチを無効
             },
         },

@@ -4,8 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes";
 
 type ChildComponentProps = {
-    currentItems: listItemType[]
-    taskItems: taskItemType[] | undefined;
+    currentItems: listItemType[];
+    taskItems: taskItemType[];
     setEditingItem: React.Dispatch<React.SetStateAction<listItemType | null>>;
     setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };

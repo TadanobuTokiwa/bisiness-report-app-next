@@ -22,7 +22,7 @@ const SendList = () => {
     const itemsPerPage = 10
 
     const { data } = useTasks();
-    const taskItems: taskItemType[] | undefined = data
+    const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
 
     const totalPages = Math.ceil(allItems.length / itemsPerPage)
     const currentItems = allItems.slice(

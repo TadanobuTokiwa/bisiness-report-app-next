@@ -156,7 +156,7 @@ export const updateTaskManager = async(editItem: taskItemType) => {
     }
 }
 
-export const fetchAllTasks = async () => {
+export const fetchAllTasks = async (): Promise<taskItemType[]> => {
     const q = query(
         collection(db, "taskManager"),
         orderBy("orderNum", "asc")
