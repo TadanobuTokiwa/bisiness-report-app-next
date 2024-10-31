@@ -8,7 +8,7 @@ import SearchComp from '@/feature/components/sendlist/SearchComp'
 import TasksTable from '@/feature/components/sendlist/TasksTable'
 import ListFooter from '@/feature/components/sendlist/ListFooter'
 import ItemEditDialog from '@/feature/components/sendlist/ItemEditDialog'
-import ProtectedRoute from '../protectedRoute'
+import ProtectedRoute from '../../protectedRoute'
 import { useAuth } from '@/context/AuthContext'
 import { useTasks } from '@/hooks/useTasks'
 

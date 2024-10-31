@@ -11,7 +11,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/services/firebaseConfig';
 import Cookies from 'js-cookie';
 import { useAuth } from '@/context/AuthContext';
-import ProtectedRoute from './protectedRoute';
+import ProtectedRoute from '../../protectedRoute';
 
 const Home = () => {
   const [cardMoved, setCardMoved] = useState<boolean>(false);
@@ -48,7 +48,7 @@ const Home = () => {
             </div>
           )}
           <Button className='border border-blue-900 hover:bg-gray-200 z-0' variant="secondary">
-            <Link href={"/sendlist"}>
+            <Link href={"/general/sendlist"}>
               リスト表示
             </Link>
           </Button>

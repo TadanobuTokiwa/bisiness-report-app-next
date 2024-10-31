@@ -48,7 +48,7 @@ const Login = () => {
 
         if(loginPath[0].id === 2 && token){
             Cookies.set('__session', token, { expires: 1 });
-            router.push("/")
+            router.push("/general/home")
         }
 
         if(loginPath[0].id === 1 && token){
