@@ -11,7 +11,7 @@ type ChildComponentProps = {
     setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setAllItems: React.Dispatch<React.SetStateAction<listItemType[]>>;
     setEditingItem: React.Dispatch<React.SetStateAction<listItemType | null>>;
-    taskItems: taskItemType[] | undefined
+    taskItems: taskItemType[]
 };
 
 const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditingItem, taskItems}: ChildComponentProps) => {

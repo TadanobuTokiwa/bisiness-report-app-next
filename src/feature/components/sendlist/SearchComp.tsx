@@ -4,14 +4,14 @@ import { CardContent} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchItems } from '@/lib/firebase/firebaseStoreFunctions'
+import { fetchAllUserItems, fetchItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
 import { downloadCSV } from '@/lib/CSVdownloader'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
 
 type ChildComponentProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     setAllItems: React.Dispatch<React.SetStateAction<listItemType[]>>;
-    taskItems: taskItemType[] | undefined;
+    taskItems: taskItemType[];
     allItems: listItemType[];
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
     userName: string
@@ -33,13 +33,33 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
         }
 
         setIsLoading(true);
-        const props = {
-            startDate,
-            endDate,
-            userName: searchName
+        if(searchName === "ALL"){
+            const props = {
+                startDate,
+                endDate
+            }
+            const item = await fetchAllUserItems(props)
+            setAllItems(item)
+        }else{
+            if(task === "ALL"){
+                const props = {
+                    startDate,
+                    endDate,
+                    userName: searchName
+                }
+                const items = await fetchItems(props)
+                setAllItems(items)
+            }else{
+                const props = {
+                    startDate,
+                    endDate,
+                    userName: searchName,
+                    task
+                }
+                const items = await fetchTaskFilterdItems(props)
+                setAllItems(items)
+            }
         }
-        const items = await fetchItems(props)
-        setAllItems(items)
         setIsLoading(false);
         setCurrentPage(1);
     }
@@ -109,7 +129,18 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
                     <SelectValue placeholder="業務項目を選択" />
                 </SelectTrigger>
                 <SelectContent className='bg-gray-100'>
-                    <SelectItem value="ALL">全て</SelectItem>
+                    <SelectItem value="ALL">ALL</SelectItem>
+                    {taskItems.map(item => {
+                        return(
+                            <SelectItem 
+                                key={item.id}
+                                value={String(item.id)}
+                                style={{"backgroundColor": item.color}}
+                            >
+                                {item.taskName}
+                            </SelectItem>
+                        )
+                    })}
                 </SelectContent>
                 </Select>
             </div>

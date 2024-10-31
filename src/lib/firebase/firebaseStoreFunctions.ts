@@ -10,6 +10,18 @@ type fetchItemsPropsType = {
     userName: string;
 }
 
+type fetchAllUserItemsPropsType = {
+    startDate: string;
+    endDate: string;
+}
+
+type fetchTaskFilterdItemsPropsType = {
+    startDate: string;
+    endDate: string;
+    userName: string;
+    task: string;
+}
+
 export const fetchTasks = async (): Promise<taskItemType[]> => {
     const q = query(
         collection(db, "taskManager"),
@@ -41,6 +53,58 @@ export const fetchItems = async ({startDate, endDate, userName}: fetchItemsProps
         where("User" , "==" , userName),
         where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
         where("DateTimeNum", ">=", Number(startDate.replaceAll("-","") + "0000")),
+        orderBy("DateTimeNum" , "asc")
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data() as DocumentData
+        const docID = doc.id
+        return({
+            date: data.createDate,
+            task: data.task,
+            startTime: data.startTime,
+            endTime: data.endTime,
+            workingHour: data.workingHour,
+            kensu: data.kensu,
+            perHour: data.perHour,
+            userName: data.User,
+            docID
+        }) as listItemType
+    });
+}
+
+export const fetchAllUserItems = async ({startDate, endDate}: fetchAllUserItemsPropsType) => {
+    const q = query(
+        collection(db, "task"),
+        where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
+        where("DateTimeNum", ">=", Number(startDate.replaceAll("-","") + "0000")),
+        orderBy("DateTimeNum" , "asc")
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data() as DocumentData
+        const docID = doc.id
+        return({
+            date: data.createDate,
+            task: data.task,
+            startTime: data.startTime,
+            endTime: data.endTime,
+            workingHour: data.workingHour,
+            kensu: data.kensu,
+            perHour: data.perHour,
+            userName: data.User,
+            docID
+        }) as listItemType
+    });
+}
+
+export const fetchTaskFilterdItems = async ({startDate, endDate, userName, task}: fetchTaskFilterdItemsPropsType) => {
+    const q = query(
+        collection(db, "task"),
+        where("User" , "==" , userName),
+        where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
+        where("DateTimeNum", ">=", Number(startDate.replaceAll("-","") + "0000")),
+        where("task", "==", task),
         orderBy("DateTimeNum" , "asc")
     );
     const querySnapshot = await getDocs(q);
@@ -156,7 +220,7 @@ export const updateTaskManager = async(editItem: taskItemType) => {
     }
 }
 
-export const fetchAllTasks = async () => {
+export const fetchAllTasks = async (): Promise<taskItemType[]> => {
     const q = query(
         collection(db, "taskManager"),
         orderBy("orderNum", "asc")

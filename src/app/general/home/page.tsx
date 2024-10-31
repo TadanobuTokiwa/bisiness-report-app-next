@@ -11,13 +11,17 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/services/firebaseConfig';
 import Cookies from 'js-cookie';
 import { useAuth } from '@/context/AuthContext';
-import ProtectedRoute from './protectedRoute';
+import ProtectedRoute from '../../protectedRoute';
 
 const Home = () => {
   const [cardMoved, setCardMoved] = useState<boolean>(false);
 
   const router = useRouter();
   const { userName } = useAuth();
+
+  const reset = () => {
+    setCardMoved(false);
+  }
 
   const logout = async() => {
     await signOut(auth)
@@ -38,17 +42,25 @@ const Home = () => {
             </Button>
           </div>
         </div>
-          <TasksForm cardMoved={cardMoved} setCardMoved={setCardMoved}/>
+          {cardMoved ? 
+            <></> :
+            <TasksForm 
+            cardMoved={cardMoved} 
+            setCardMoved={setCardMoved}
+            postUserName=""
+            />
+          }
         <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
         <div className="invisible"></div>
           {cardMoved && (
             <div className="text-center">
               <h2 className="text-2xl font-bold text-green-600">送信完了</h2>
               <p className="mt-2">業務報告が正常に送信されました。</p>
+              <Button className='my-5 border border-blue-900 hover:bg-gray-200 z-0' onClick={() => reset()}>新しいカードを作成</Button>
             </div>
           )}
           <Button className='border border-blue-900 hover:bg-gray-200 z-0' variant="secondary">
-            <Link href={"/sendlist"}>
+            <Link href={"/general/sendlist"}>
               リスト表示
             </Link>
           </Button>

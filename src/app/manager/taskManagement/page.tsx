@@ -124,10 +124,10 @@ const TaskManagement = () => {
             if (window.confirm('変更が保存されていません。保存せずに戻りますか？')) {
                 setChangedItems([])
                 setAddedItems([])
-                router.push("/maneger/manegerMenu")
+                router.back()
             }
         }
-        router.push("/maneger/manegerMenu")
+        router.back()
     }  
 
     return (

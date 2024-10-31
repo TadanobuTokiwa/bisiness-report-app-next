@@ -8,7 +8,7 @@ import SearchComp from '@/feature/components/sendlist/SearchComp'
 import TasksTable from '@/feature/components/sendlist/TasksTable'
 import ListFooter from '@/feature/components/sendlist/ListFooter'
 import ItemEditDialog from '@/feature/components/sendlist/ItemEditDialog'
-import ProtectedRoute from '../protectedRoute'
+import ProtectedRoute from '../../protectedRoute'
 import { useAuth } from '@/context/AuthContext'
 import { useTasks } from '@/hooks/useTasks'
 
@@ -22,7 +22,7 @@ const SendList = () => {
     const itemsPerPage = 10
 
     const { data } = useTasks();
-    const taskItems: taskItemType[] | undefined = data
+    const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
 
     const totalPages = Math.ceil(allItems.length / itemsPerPage)
     const currentItems = allItems.slice(
@@ -49,6 +49,7 @@ const SendList = () => {
                 taskItems={taskItems}
                 setEditingItem={setEditingItem}
                 setIsEditDialogOpen={setIsEditDialogOpen}
+                manager={false}
             />
             <ListFooter
                 isLoading={isLoading}

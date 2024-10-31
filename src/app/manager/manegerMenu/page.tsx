@@ -38,17 +38,17 @@ const ManagerMenu = () => {
                         </div>
                         <Button 
                             className="w-full border border-gray-400 bg-gray-50 hover:bg-gray-200" 
-                            onClick={() => router.push("/maneger/taskManagement")}>
+                            onClick={() => router.push("/manager/taskManagement")}>
                             業務項目管理画面
                         </Button>
                         <Button 
                             className="w-full border border-gray-400 bg-gray-50 hover:bg-gray-200" 
-                            onClick={() => console.log("")}>
+                            onClick={() => router.push("/manager/sendlist")}>
                             全従業員リスト
                         </Button>
                         <Button 
                             className="w-full border border-gray-400 bg-gray-50 hover:bg-gray-200" 
-                            onClick={() => console.log("")}>
+                            onClick={() => router.push("/manager/home")}>
                             新規投稿
                         </Button>
                     </CardContent>
