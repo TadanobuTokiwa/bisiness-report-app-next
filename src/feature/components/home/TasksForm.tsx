@@ -21,9 +21,10 @@ interface updateTaskAction{
 type ChildComponentProps = {
     cardMoved: boolean;
     setCardMoved: React.Dispatch<React.SetStateAction<boolean>>;
+    postUserName: string
 };
 
-const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
+const TasksForm = ({cardMoved, setCardMoved, postUserName}: ChildComponentProps) => {
 
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false)
@@ -32,6 +33,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
     const { tasks } = useAppSelector((store) => store.tasks);
     const dispatch = useDispatch()
     const { userName } = useAuth();
+    const postName = postUserName === "" && userName ? userName : postUserName
 
     const { data } = useTasks();
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
@@ -81,7 +83,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
                 "startTime": task.startTime,
                 "endTime": task.endTime,
                 "kensu": task.kensu,
-                "User": userName,
+                "User": postName,
                 "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
                 "perHour": perHour,
                 "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))

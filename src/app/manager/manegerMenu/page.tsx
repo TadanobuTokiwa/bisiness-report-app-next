@@ -38,7 +38,7 @@ const ManagerMenu = () => {
                         </div>
                         <Button 
                             className="w-full border border-gray-400 bg-gray-50 hover:bg-gray-200" 
-                            onClick={() => router.push("/maneger/taskManagement")}>
+                            onClick={() => router.push("/manager/taskManagement")}>
                             業務項目管理画面
                         </Button>
                         <Button 

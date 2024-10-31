@@ -3,18 +3,16 @@
 import { useState } from 'react'
 import { Provider } from 'react-redux';
 import { Button } from "@/components/ui/button"
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { store } from '@/store/store';
 import TasksForm from '@/feature/components/home/TasksForm';
-import { signOut } from 'firebase/auth';
-import { auth } from '@/services/firebaseConfig';
-import Cookies from 'js-cookie';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '../../protectedRoute';
+import { Input } from '@/components/ui/input';
 
 const ManagerHome = () => {
     const [cardMoved, setCardMoved] = useState<boolean>(false);
+    const [postUserName, setPostUserName] = useState<string>("");
 
     const router = useRouter();
     const { userName } = useAuth();
@@ -23,23 +21,15 @@ const ManagerHome = () => {
         setCardMoved(false);
     }
 
-    const logout = async() => {
-        await signOut(auth)
-        Cookies.remove('__session');
-        router.push('/login');
-    }
-
     return (
         <ProtectedRoute>
         <Provider store={store}>
         <div className="container mx-auto p-4 max-w-5xl">
             <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold">業務報告</h1>
+            <strong className='border px-4 bg-yellow-600 text-white'>管理者用</strong>
             <div className="flex items-center gap-4">
                 <span className="text-sm text-muted-foreground">{`ユーザー名: ${userName}`}</span>
-                <Button className='hover:bg-gray-200' variant="outline" size="sm" onClick={() => logout()}>
-                ログアウト
-                </Button>
             </div>
             </div>
             {cardMoved ? 
@@ -47,10 +37,20 @@ const ManagerHome = () => {
                 <TasksForm 
                 cardMoved={cardMoved} 
                 setCardMoved={setCardMoved}
+                postUserName={postUserName}
                 />
             }
             <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
-            <div className="invisible"></div>
+            <div className="">
+                <Input 
+                    className='w-28'
+                    value={postUserName}
+                    onChange={(e) => setPostUserName(e.target.value)}
+                    placeholder='投稿ユーザー名' 
+                />
+                <p className='pt-1 text-xs'>※空欄の場合</p>
+                <p className='text-xs'>{userName} で投稿</p>
+            </div>
             {cardMoved && (
                 <div className="text-center">
                 <h2 className="text-2xl font-bold text-green-600">送信完了</h2>
@@ -58,10 +58,12 @@ const ManagerHome = () => {
                 <Button className='my-5 border border-blue-900 hover:bg-gray-200 z-0' onClick={() => reset()}>新しいカードを作成</Button>
                 </div>
             )}
-            <Button className='border border-blue-900 hover:bg-gray-200 z-0' variant="secondary">
-                <Link href={"/general/sendlist"}>
-                リスト表示
-                </Link>
+            <Button 
+                className='border border-blue-900 hover:bg-gray-200 z-0' 
+                variant="secondary"
+                onClick={() => router.back()}
+            >
+                戻る
             </Button>
             </div>
         </div>

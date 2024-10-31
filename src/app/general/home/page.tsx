@@ -47,6 +47,7 @@ const Home = () => {
             <TasksForm 
             cardMoved={cardMoved} 
             setCardMoved={setCardMoved}
+            postUserName=""
             />
           }
         <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
