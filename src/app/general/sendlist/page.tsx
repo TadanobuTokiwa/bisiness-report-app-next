@@ -23,6 +23,7 @@ const SendList = () => {
 
     const { data } = useTasks();
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
+    const allTaskItems: taskItemType[] = data ? data : []
 
     const totalPages = Math.ceil(allItems.length / itemsPerPage)
     const currentItems = allItems.slice(
@@ -46,7 +47,7 @@ const SendList = () => {
             />
             <TasksTable
                 currentItems={currentItems}
-                taskItems={taskItems}
+                taskItems={allTaskItems}
                 setEditingItem={setEditingItem}
                 setIsEditDialogOpen={setIsEditDialogOpen}
                 manager={false}
