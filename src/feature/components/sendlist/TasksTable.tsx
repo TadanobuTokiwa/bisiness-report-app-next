@@ -40,7 +40,7 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                     const taskName = taskItems?.filter(taskItem => String(taskItem.id) === item.task)[0].taskName
                     const disableEdit = new Date(item.date).toDateString() !== new Date().toDateString()
                     return (
-                        <TableRow key={index}>
+                        <TableRow key={index} className="hover:bg-gray-200">
                             <TableCell>{item.date}</TableCell>
                             <TableCell>{taskName}</TableCell>
                             <TableCell>{item.startTime}</TableCell>
