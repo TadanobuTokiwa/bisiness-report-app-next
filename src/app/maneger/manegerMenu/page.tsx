@@ -48,7 +48,7 @@ const ManagerMenu = () => {
                         </Button>
                         <Button 
                             className="w-full border border-gray-400 bg-gray-50 hover:bg-gray-200" 
-                            onClick={() => console.log("")}>
+                            onClick={() => router.push("/manager/home")}>
                             新規投稿
                         </Button>
                     </CardContent>
