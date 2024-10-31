@@ -6,10 +6,11 @@ import { addTask, removeTask, resetTask, updateTask } from '@/store/slices/TaskF
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { addItem, fetchTasks } from "@/lib/firebase/firebaseStoreFunctions";
+import { useState } from "react";
+import { addItem } from "@/lib/firebase/firebaseStoreFunctions";
 import { postItemType, taskItemType } from "@/types/firebaseDocTypes";
 import { useAuth } from "@/context/AuthContext";
+import { useTasks } from "@/hooks/useTasks";
 
 interface updateTaskAction{
     id: number;
@@ -25,7 +26,6 @@ type ChildComponentProps = {
 const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
 
     const [isSubmitted, setIsSubmitted] = useState(false)
-    const [taskItems, setTaskItems] = useState<taskItemType[] | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
 
     const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -33,13 +33,8 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
     const dispatch = useDispatch()
     const { userName } = useAuth();
 
-    useEffect(() => {
-        const fetchFirebase = async() => {
-            const t = await fetchTasks()
-            setTaskItems(t);
-        }
-        fetchFirebase();
-    },[])
+    const { data } = useTasks();
+    const taskItems: taskItemType[] | undefined = data
 
     const editTask = ({id, field, value}: updateTaskAction) => {
         const action = {id, field, value}

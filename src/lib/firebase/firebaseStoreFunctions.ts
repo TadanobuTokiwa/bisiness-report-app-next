@@ -10,7 +10,7 @@ type fetchItemsPropsType = {
     userName: string;
 }
 
-export const fetchTasks = async () => {
+export const fetchTasks = async (): Promise<taskItemType[]> => {
     const q = query(
         collection(db, "taskManager"),
         where("chk", "==", true),
