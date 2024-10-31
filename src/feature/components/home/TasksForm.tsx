@@ -25,7 +25,7 @@ type ChildComponentProps = {
 
 const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
 
-    const [isSubmitted, setIsSubmitted] = useState(false)
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false)
 
     const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -48,6 +48,7 @@ const TasksForm = ({cardMoved, setCardMoved}: ChildComponentProps) => {
     const handleTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
         if (event.propertyName === 'transform') {
             setCardMoved(true);
+            setLoading(false);
         }
     }
     

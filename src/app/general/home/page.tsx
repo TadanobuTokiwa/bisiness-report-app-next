@@ -19,6 +19,10 @@ const Home = () => {
   const router = useRouter();
   const { userName } = useAuth();
 
+  const reset = () => {
+    setCardMoved(false);
+  }
+
   const logout = async() => {
     await signOut(auth)
     Cookies.remove('__session');
@@ -38,13 +42,20 @@ const Home = () => {
             </Button>
           </div>
         </div>
-          <TasksForm cardMoved={cardMoved} setCardMoved={setCardMoved}/>
+          {cardMoved ? 
+            <></> :
+            <TasksForm 
+            cardMoved={cardMoved} 
+            setCardMoved={setCardMoved}
+            />
+          }
         <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
         <div className="invisible"></div>
           {cardMoved && (
             <div className="text-center">
               <h2 className="text-2xl font-bold text-green-600">送信完了</h2>
               <p className="mt-2">業務報告が正常に送信されました。</p>
+              <Button className='my-5 border border-blue-900 hover:bg-gray-200 z-0' onClick={() => reset()}>新しいカードを作成</Button>
             </div>
           )}
           <Button className='border border-blue-900 hover:bg-gray-200 z-0' variant="secondary">
