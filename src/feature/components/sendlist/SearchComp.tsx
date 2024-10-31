@@ -4,7 +4,7 @@ import { CardContent} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchItems } from '@/lib/firebase/firebaseStoreFunctions'
+import { fetchItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
 import { downloadCSV } from '@/lib/CSVdownloader'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
 
@@ -33,13 +33,24 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
         }
 
         setIsLoading(true);
-        const props = {
-            startDate,
-            endDate,
-            userName: searchName
+        if(task === "ALL"){
+            const props = {
+                startDate,
+                endDate,
+                userName: searchName
+            }
+            const items = await fetchItems(props)
+            setAllItems(items)
+        }else{
+            const props = {
+                startDate,
+                endDate,
+                userName: searchName,
+                task
+            }
+            const items = await fetchTaskFilterdItems(props)
+            setAllItems(items)
         }
-        const items = await fetchItems(props)
-        setAllItems(items)
         setIsLoading(false);
         setCurrentPage(1);
     }
@@ -110,6 +121,17 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
                 </SelectTrigger>
                 <SelectContent className='bg-gray-100'>
                     <SelectItem value="ALL">全て</SelectItem>
+                    {taskItems.map(item => {
+                        return(
+                            <SelectItem 
+                                key={item.id}
+                                value={String(item.id)}
+                                style={{"backgroundColor": item.color}}
+                            >
+                                {item.taskName}
+                            </SelectItem>
+                        )
+                    })}
                 </SelectContent>
                 </Select>
             </div>
