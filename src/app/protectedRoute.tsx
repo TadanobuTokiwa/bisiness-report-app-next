@@ -13,7 +13,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const { user, loading } = useAuth();
     const router = useRouter();
     const sessionCookie = Cookies.get('__session');
-
+    
     useEffect(() => {
         if (!loading && (!user || !sessionCookie)) {
         router.push('/login');

@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog } from "@/components/ui/dialog"
-import { fetchTasks } from '@/lib/firebase/firebaseStoreFunctions'
 import { listItemType, taskItemType } from '@/types/firebaseDocTypes'
 import SearchComp from '@/feature/components/sendlist/SearchComp'
 import TasksTable from '@/feature/components/sendlist/TasksTable'
@@ -11,10 +10,10 @@ import ListFooter from '@/feature/components/sendlist/ListFooter'
 import ItemEditDialog from '@/feature/components/sendlist/ItemEditDialog'
 import ProtectedRoute from '../protectedRoute'
 import { useAuth } from '@/context/AuthContext'
+import { useTasks } from '@/hooks/useTasks'
 
 const SendList = () => {
     const [allItems, setAllItems] = useState<listItemType[]>([]);
-    const [taskItems, setTaskItems] = useState<taskItemType[] | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [editingItem, setEditingItem] = useState<listItemType | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -22,13 +21,8 @@ const SendList = () => {
     const { userName } = useAuth();
     const itemsPerPage = 10
 
-    useEffect(() => {
-        const fetchFirebase = async() => {
-            const t = await fetchTasks()
-            setTaskItems(t);
-        }
-        fetchFirebase();
-    },[])
+    const { data } = useTasks();
+    const taskItems: taskItemType[] | undefined = data
 
     const totalPages = Math.ceil(allItems.length / itemsPerPage)
     const currentItems = allItems.slice(

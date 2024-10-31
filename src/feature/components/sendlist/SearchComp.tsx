@@ -11,7 +11,7 @@ import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
 type ChildComponentProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     setAllItems: React.Dispatch<React.SetStateAction<listItemType[]>>;
-    taskItems: taskItemType[] | null;
+    taskItems: taskItemType[] | undefined;
     allItems: listItemType[];
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
     userName: string
