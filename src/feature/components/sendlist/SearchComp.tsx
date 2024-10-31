@@ -4,7 +4,7 @@ import { CardContent} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchAllUserItems, fetchItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
+import { fetchAllUserItems, fetchAllUserTaskFilterdItems, fetchItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
 import { downloadCSV } from '@/lib/CSVdownloader'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
 
@@ -18,8 +18,8 @@ type ChildComponentProps = {
 };
 
 const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentPage, userName}: ChildComponentProps) => {
-    const [startDate, setStartDate] = useState<string>('2024-10-01');
-    const [endDate, setEndDate] = useState<string>('2024-10-31');
+    const [startDate, setStartDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
+    const [endDate, setEndDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
     const [searchName, setSearchName] = useState<string>(userName);
     const [task, setTask] = useState('ALL');
 
@@ -33,12 +33,20 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
         }
 
         setIsLoading(true);
-        if(searchName === "ALL"){
+        if(searchName === "ALL" && task === "ALL"){
             const props = {
                 startDate,
                 endDate
             }
             const item = await fetchAllUserItems(props)
+            setAllItems(item)
+        }else if(searchName === "ALL" && task !== "ALL"){
+            const props = {
+                startDate,
+                endDate,
+                task
+            }
+            const item = await fetchAllUserTaskFilterdItems(props)
             setAllItems(item)
         }else{
             if(task === "ALL"){
