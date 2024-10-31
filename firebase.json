@@ -7,10 +7,10 @@
       "**/node_modules/**"
     ],
     "rewrites": [
-        {
-          "source": "/api/taskManagers",
-          "function": "getTaskManagers"
-        }
+      {
+        "source": "/api/taskManagers",
+        "function": "getTaskManagers"
+      }
     ]
   },
   "firestore": {
@@ -21,6 +21,21 @@
     {
       "source": "functions",
       "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    },
+    {
+      "source": "firebase-functions",
+      "codebase": "functions",
       "ignore": [
         "node_modules",
         ".git",
