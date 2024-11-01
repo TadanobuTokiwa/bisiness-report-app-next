@@ -29,6 +29,7 @@ type fetchAllUserTaskFilterdItemsPropsType = {
 }
 
 export const fetchTasks = async (): Promise<taskItemType[]> => {
+    if(!db) return []
     const q = query(
         collection(db, "taskManager"),
         where("chk", "==", true),
@@ -50,10 +51,12 @@ export const fetchTasks = async (): Promise<taskItemType[]> => {
 };
 
 export const addItem = async (newTask: postItemType) => {
+    if(!db) return []
     await addDoc(collection(db, "task"), newTask)
 }
 
 export const fetchItems = async ({startDate, endDate, userName}: fetchItemsPropsType) => {
+    if(!db) return []
     const q = query(
         collection(db, "task"),
         where("User" , "==" , userName),
@@ -80,6 +83,7 @@ export const fetchItems = async ({startDate, endDate, userName}: fetchItemsProps
 }
 
 export const fetchAllUserItems = async ({startDate, endDate}: fetchAllUserItemsPropsType) => {
+    if(!db) return []
     const q = query(
         collection(db, "task"),
         where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
@@ -105,6 +109,7 @@ export const fetchAllUserItems = async ({startDate, endDate}: fetchAllUserItemsP
 }
 
 export const fetchTaskFilterdItems = async ({startDate, endDate, userName, task}: fetchTaskFilterdItemsPropsType) => {
+    if(!db) return []
     const q = query(
         collection(db, "task"),
         where("User" , "==" , userName),
@@ -132,6 +137,7 @@ export const fetchTaskFilterdItems = async ({startDate, endDate, userName, task}
 }
 
 export const fetchAllUserTaskFilterdItems = async ({startDate, endDate, task}: fetchAllUserTaskFilterdItemsPropsType) => {
+    if(!db) return []
     const q = query(
         collection(db, "task"),
         where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
@@ -158,6 +164,7 @@ export const fetchAllUserTaskFilterdItems = async ({startDate, endDate, task}: f
 }
 
 export const updateItem = async(editItem: listItemType) => {
+    if(!db) return []
     const docRef = doc(db, "task", editItem.docID);
 
     const dateTime1 = new Date('2024-03-01 ' + editItem.startTime + ':00')
@@ -189,6 +196,7 @@ export const updateItem = async(editItem: listItemType) => {
 }
 
 export const signInWithGoogle = async () => {
+    if(!auth) return
     try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
@@ -199,6 +207,7 @@ export const signInWithGoogle = async () => {
 }
 
 export const fetchLoginPaths = async () => {
+    if(!db) return []
     const q = query(
         collection(db, "loginAccount")
     );
@@ -213,6 +222,7 @@ export const fetchLoginPaths = async () => {
 }
 
 export const logout = async () => {
+    if(!auth) return
     try {
         await signOut(auth);
         Cookies.remove('__session');
@@ -222,6 +232,7 @@ export const logout = async () => {
 };
 
 export const addTaskManager = async (newTask: taskItemType) => {
+    if(!db) return []
     const newTaskManagerItem = {
         chk: newTask.chk,
         color: newTask.color,
@@ -233,6 +244,7 @@ export const addTaskManager = async (newTask: taskItemType) => {
 }
 
 export const updateTaskManager = async(editItem: taskItemType) => {
+    if(!db) return []
     const docRef = doc(db, "taskManager", editItem.docID);
     const editTaskManagerItem = {
         chk: editItem.chk,
@@ -253,6 +265,7 @@ export const updateTaskManager = async(editItem: taskItemType) => {
 }
 
 export const fetchAllTasks = async (): Promise<taskItemType[]> => {
+    if(!db) return []
     const q = query(
         collection(db, "taskManager"),
         orderBy("orderNum", "asc")
