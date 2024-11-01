@@ -31,7 +31,7 @@ const Login = () => {
         const result = await signInWithPopup(auth, googleProvider)
         const user = result.user
         if(!user?.email || user?.email.slice(-10) !== "@rext.work"){
-            //window.alert("rextのアカウントを使用してください")
+            window.alert("rextのアカウントを使用してください")
             return
         }
 
@@ -46,12 +46,12 @@ const Login = () => {
         const loginPath = items.filter(item => item.accountname === loginKey)
 
         if(loginPath.length === 0){
-            //window.alert("ログインキーが違います");
+            window.alert("ログインキーが違います");
             return
         }
 
         if(!token){
-            //window.alert("Googleアカウントのログインを行ってください")
+            window.alert("Googleアカウントのログインを行ってください")
             return
         }
 
