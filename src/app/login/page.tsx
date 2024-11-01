@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,22 +8,30 @@ import { Label } from "@/components/ui/label"
 import { fetchLoginPaths } from '@/lib/firebase/firebaseStoreFunctions'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { signInWithPopup } from 'firebase/auth'
-import { auth, googleProvider } from '@/services/firebaseConfig'
+import { Auth, signInWithPopup } from 'firebase/auth'
+import { getFirebaseServices, googleProvider } from '@/services/firebaseConfig'
 
 const Login = () => {
     const [loginKey, setLoginKey] = useState('')
     const [userName, setUserName] = useState<string | null | undefined>(null)
     const [token, setToken] = useState<string>("")
+    const [auth, setAuth] = useState<Auth | null>()
 
     const router = useRouter();
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const { auth } = getFirebaseServices();
+            setAuth(auth);
+        }
+    },[])
 
     const handleGoogleLogin = async() => {
         if(!auth) return
         const result = await signInWithPopup(auth, googleProvider)
         const user = result.user
         if(!user?.email || user?.email.slice(-10) !== "@rext.work"){
-            window.alert("rextのアカウントを使用してください")
+            //window.alert("rextのアカウントを使用してください")
             return
         }
 
@@ -38,12 +46,12 @@ const Login = () => {
         const loginPath = items.filter(item => item.accountname === loginKey)
 
         if(loginPath.length === 0){
-            window.alert("ログインキーが違います");
+            //window.alert("ログインキーが違います");
             return
         }
 
         if(!token){
-            window.alert("Googleアカウントのログインを行ってください")
+            //window.alert("Googleアカウントのログインを行ってください")
             return
         }
 
@@ -73,7 +81,7 @@ const Login = () => {
                     <Button 
                     variant="outline" 
                     className="w-full"
-                    onClick={handleGoogleLogin}
+                    onClick={() => handleGoogleLogin()}
                     >
                         <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                         <path
@@ -108,7 +116,7 @@ const Login = () => {
                 </div>
                 </CardContent>
                 <CardFooter>
-                <Button className="w-full border hover:bg-gray-200" onClick={handleLogin}>
+                <Button className="w-full border hover:bg-gray-200" onClick={() => handleLogin()}>
                     ログイン
                 </Button>
                 </CardFooter>

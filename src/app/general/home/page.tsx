@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux';
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
@@ -8,13 +8,18 @@ import { useRouter } from 'next/navigation'
 import { store } from '@/store/store';
 import TasksForm from '@/feature/components/home/TasksForm';
 import { signOut } from 'firebase/auth';
-import { auth } from '@/services/firebaseConfig';
+import { getFirebaseServices, initializeFirebaseApp } from '@/services/firebaseConfig';
 import Cookies from 'js-cookie';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '../../protectedRoute';
 
 const Home = () => {
   const [cardMoved, setCardMoved] = useState<boolean>(false);
+
+  useEffect(() => {
+    initializeFirebaseApp();
+  }, []);
+  const { auth } = getFirebaseServices();
 
   const router = useRouter();
   const { userName } = useAuth();
