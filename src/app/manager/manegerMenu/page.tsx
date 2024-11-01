@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { useAuth } from "@/context/AuthContext"
-import { auth } from "@/services/firebaseConfig"
+import { getFirebaseServices } from "@/services/firebaseConfig"
 import { signOut } from "firebase/auth"
 import { useRouter } from "next/navigation"
 import Cookies from 'js-cookie';
@@ -14,6 +14,8 @@ const ManagerMenu = () => {
 
     const { userName } = useAuth();
     const router = useRouter()
+
+    const { auth } = getFirebaseServices();
 
     const logout = async() => {
         await signOut(auth)
