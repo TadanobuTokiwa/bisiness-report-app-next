@@ -24,9 +24,11 @@ const Home = () => {
   }
 
   const logout = async() => {
-    await signOut(auth)
-    Cookies.remove('__session');
-    router.push('/login');
+    if (auth) {
+      await signOut(auth)
+      Cookies.remove('__session');
+      router.push('/login');
+    }
   }
 
   return (

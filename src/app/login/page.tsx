@@ -19,6 +19,7 @@ const Login = () => {
     const router = useRouter();
 
     const handleGoogleLogin = async() => {
+        if(!auth) return
         const result = await signInWithPopup(auth, googleProvider)
         const user = result.user
         if(!user?.email || user?.email.slice(-10) !== "@rext.work"){
