@@ -1,7 +1,6 @@
 'use client'
 
-import { initializeApp } from "firebase-admin";
-import { getApps } from "firebase/app";
+import { initializeApp, getApps } from 'firebase/app';
 import { useEffect } from "react";
 
 const firebaseConfig = {
