@@ -36,13 +36,17 @@
 
 1. リポジトリをクローンします:  
    ```bash  
-   git clone https://github.com/Tadanobu Tokiwa/bisiness-report-app-next.git   
+   git clone https://github.com/TadanobuTokiwa/bisiness-report-app-next.git   
 2. 必要な依存関係をインストールします:  
    ```bash  
    npm install    
 3. ローカル環境でサーバーを起動します:  
    ```bash  
-   npm run dev  
+   npm run dev
+
+## 更新方法
+このリポジトリのmainブランチにmergeを行うとVercelへ自動デプロイを行います
+
 ## 環境変数の設定
 
 このアプリケーションには、APIキーやその他の機密情報を管理するために環境変数が必要です。環境変数は .env.local ファイルに設定します。設定が必要な変数は以下の通りです。  
