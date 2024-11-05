@@ -55,9 +55,12 @@ const taskSlice = createSlice({
             state.tasks = [
                 { id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
             ]
+        },
+        createTemplate: (state, action: PayloadAction<tasks[]>) => {
+            state.tasks = action.payload
         }
     }
 })
 
-export const { addTask , removeTask , updateTask , resetTask } = taskSlice.actions;
+export const { addTask , removeTask , updateTask , resetTask , createTemplate } = taskSlice.actions;
 export default taskSlice.reducer;
