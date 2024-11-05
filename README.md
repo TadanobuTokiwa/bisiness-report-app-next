@@ -23,14 +23,14 @@
 
 | 項目  | 言語・フレームワーク |
 | ------------- | -------------- |
-| Language      | TypeScript                    |   
-| Front-end     | Next.js (App Router)          |  
-| Global State  | Redux (Redux Toolkit)         |  
-| Server State  | React Query                   |  
-| Back-end      | Firebase (Firestore Database) |  
-| Authentication| Firebase (Authentication)     |  
-| Style         | shadcn/ui , Tailwind CSS      |  
-| Hosting       | Vercel                        |   
+| Language      | TypeScript                            |   
+| Front-end     | Next.js (App Router)                  |  
+| Global State  | Redux (Redux Toolkit, Redux Persist)  |  
+| Server State  | React Query                           |  
+| Back-end      | Firebase (Firestore Database)         |  
+| Authentication| Firebase (Authentication)             |  
+| Style         | shadcn/ui , Tailwind CSS              |  
+| Hosting       | Vercel                                |   
 
 ## インストール方法
 
@@ -48,14 +48,15 @@
 このアプリケーションには、APIキーやその他の機密情報を管理するために環境変数が必要です。環境変数は .env.local ファイルに設定します。設定が必要な変数は以下の通りです。  
 
 .env  
-NEXT_PUBLIC_FIREBASE_API_KEY  
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN  
-NEXT_PUBLIC_FIREBASE_PROJECT_ID  
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET  
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID  
-NEXT_PUBLIC_FIREBASE_APP_ID  
+`NEXT_PUBLIC_FIREBASE_API_KEY`  
+`NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`  
+`NEXT_PUBLIC_FIREBASE_PROJECT_ID`  
+`NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`  
+`NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`  
+`NEXT_PUBLIC_FIREBASE_APP_ID`  
 
-全てFirebaseの機能と連携するためのKeyです　　
+全てFirebaseの機能と連携するためのKeyです  
+※ FirebaseのCRUD操作は `lib/firebase/firebaseStoreFunctions.ts` で管理しています
 
 ## アプリ操作方法  
 
@@ -85,3 +86,6 @@ CSV抽出ボタンで検索したリストの全アイテムをCSVダウンロ�
 
 - 業務項目(React Query)  
 様々な画面で使用するリストで、複数回の読み込みを避けるため　　
+　　
+- テンプレート(Redux Persist)  
+読み込みを割けるため、各クライアント毎storageで管理　　
