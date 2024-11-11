@@ -21,10 +21,11 @@ interface updateTaskAction{
 type ChildComponentProps = {
     cardMoved: boolean;
     setCardMoved: React.Dispatch<React.SetStateAction<boolean>>;
-    postUserName: string
+    postUserName: string;
+    postDate: string;
 };
 
-const TasksForm = ({cardMoved, setCardMoved, postUserName}: ChildComponentProps) => {
+const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildComponentProps) => {
 
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false)
@@ -75,7 +76,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName}: ChildComponentProps)
             const dateTime1 = new Date('2024-03-01 ' + task.startTime + ':00')
             const dateTime2 = new Date('2024-03-01 ' + task.endTime + ':00')
             const diff = dateTime2.getTime() - dateTime1.getTime(); 
-            const date = new Date()
+            const date = postDate ? new Date(postDate) : new Date();
             const perHour = task.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (task.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
             const newTask: postItemType = {
                 "createDate": date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,'0') + "-" + String(date.getDate()).padStart(2,'0'),

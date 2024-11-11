@@ -58,6 +58,7 @@ const Home = () => {
               cardMoved={cardMoved} 
               setCardMoved={setCardMoved}
               postUserName=""
+              postDate=""
               />
             }
           <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
