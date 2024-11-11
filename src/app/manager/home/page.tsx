@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 const ManagerHome = () => {
     const [cardMoved, setCardMoved] = useState<boolean>(false);
     const [postUserName, setPostUserName] = useState<string>("");
+    const [postDate, setPostDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
 
     const router = useRouter();
     const { userName } = useAuth();
@@ -38,19 +39,34 @@ const ManagerHome = () => {
                 cardMoved={cardMoved} 
                 setCardMoved={setCardMoved}
                 postUserName={postUserName}
+                postDate={postDate}
                 />
             }
             <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
-            <div className="">
-                <Input 
-                    className='w-28'
-                    value={postUserName}
-                    onChange={(e) => setPostUserName(e.target.value)}
-                    placeholder='投稿ユーザー名' 
-                />
-                <p className='pt-1 text-xs'>※空欄の場合</p>
-                <p className='text-xs'>{userName} で投稿</p>
-            </div>
+            {cardMoved ? 
+                <div className="invisible"></div>
+                :
+                <div className="grid grid-cols-2">
+                    <div>
+                        <Input 
+                            className='w-28'
+                            value={postUserName}
+                            onChange={(e) => setPostUserName(e.target.value)}
+                            placeholder='投稿ユーザー名' 
+                        />
+                        <p className='pt-1 text-xs'>※空欄の場合</p>
+                        <p className='text-xs'>{userName} で投稿</p>
+                    </div>
+                    <div>
+                        <Input
+                            type="date"
+                            value={postDate}
+                            onChange={(e) => setPostDate(e.target.value)}
+                        />
+                        <p className='pt-1 text-xs'>業務を行った日</p>
+                    </div>
+                </div>
+            }
             {cardMoved && (
                 <div className="text-center">
                 <h2 className="text-2xl font-bold text-green-600">送信完了</h2>
