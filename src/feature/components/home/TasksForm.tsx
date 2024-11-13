@@ -72,27 +72,29 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
         }
         
         setLoading(true)
-        try{ tasks.map(async (task) => {
-            const dateTime1 = new Date('2024-03-01 ' + task.startTime + ':00')
-            const dateTime2 = new Date('2024-03-01 ' + task.endTime + ':00')
-            const diff = dateTime2.getTime() - dateTime1.getTime(); 
-            const date = postDate ? new Date(postDate) : new Date();
-            const perHour = task.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (task.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
-            const newTask: postItemType = {
-                "createDate": date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,'0') + "-" + String(date.getDate()).padStart(2,'0'),
-                "task": task.task,
-                "startTime": task.startTime,
-                "endTime": task.endTime,
-                "kensu": task.kensu,
-                "User": postName,
-                "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
-                "perHour": perHour,
-                "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))
-            }
-            await addItem(newTask)
+        try{ 
+            tasks.map(async (task) => {
+                const dateTime1 = new Date('2024-03-01 ' + task.startTime + ':00')
+                const dateTime2 = new Date('2024-03-01 ' + task.endTime + ':00')
+                const diff = dateTime2.getTime() - dateTime1.getTime(); 
+                const date = postDate ? new Date(postDate) : new Date();
+                const perHour = task.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (task.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
+                const newTask: postItemType = {
+                    "createDate": date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,'0') + "-" + String(date.getDate()).padStart(2,'0'),
+                    "task": task.task,
+                    "startTime": task.startTime,
+                    "endTime": task.endTime,
+                    "kensu": task.kensu,
+                    "User": postName,
+                    "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
+                    "perHour": perHour,
+                    "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))
+                }
+                await addItem(newTask)
+            })
             setIsSubmitted(true)
             dispatch(resetTask())
-        })} catch {
+        } catch {
             window.alert("エラーが発生しました");
             setLoading(false);
         }
