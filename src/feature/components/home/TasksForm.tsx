@@ -59,7 +59,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
         dispatch(addTask())
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         const chkList = tasks.filter(task => task.startTime >= task.endTime);
         const chkList2 = tasks.filter(task => task.task === "");
         if(chkList.length + chkList2.length !== 0){
@@ -73,6 +73,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
         
         setLoading(true)
         try{ 
+            await Promise.all(
             tasks.map(async (task) => {
                 const dateTime1 = new Date('2024-03-01 ' + task.startTime + ':00')
                 const dateTime2 = new Date('2024-03-01 ' + task.endTime + ':00')
@@ -92,6 +93,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                 }
                 await addItem(newTask)
             })
+            )    
             setIsSubmitted(true)
             dispatch(resetTask())
         } catch {
