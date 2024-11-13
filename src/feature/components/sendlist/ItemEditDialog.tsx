@@ -97,6 +97,7 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
                 value={editingItem.startTime}
                 onChange={(e) => setEditingItem({...editingItem, startTime: e.target.value})}
                 className="col-span-3"
+                step={60}
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -109,6 +110,7 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
                 value={editingItem.endTime}
                 onChange={(e) => setEditingItem({...editingItem, endTime: e.target.value})}
                 className="col-span-3"
+                step={60}
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

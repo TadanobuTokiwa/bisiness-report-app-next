@@ -142,6 +142,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                             value={task.startTime}
                             onChange={(e) => editTask({id: task.id, field: 'startTime', value: e.target.value})}
                             className="w-24"
+                            step={60}
                             />
                             <span>~</span>
                             <Input
@@ -149,6 +150,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                             value={task.endTime}
                             onChange={(e) => editTask({id: task.id, field: 'endTime', value: e.target.value})}
                             className="w-24"
+                            step={60}
                             />
                         </div>
                         </div>
