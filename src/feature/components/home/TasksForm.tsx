@@ -40,6 +40,9 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
 
     const editTask = ({id, field, value}: updateTaskAction) => {
+        if((field === "startTime" || field === "endTime") && typeof value === "string" && value.split(":").length === 3){
+            value = value.slice(0, -3)
+        }
         const action = {id, field, value}
         dispatch(updateTask(action))
     }
