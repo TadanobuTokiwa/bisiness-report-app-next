@@ -38,12 +38,13 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
             </TableHeader>
             <TableBody className='bg-zinc-50'>
                 {currentItems.map((item, index) => {
-                    const taskName = taskItems?.filter(taskItem => String(taskItem.id) === item.task)[0].taskName
+                    const targetTask = taskItems?.filter(taskItem => String(taskItem.id) === item.task)[0]
+                    const taskName = targetTask ? targetTask.taskName : "エラー"
                     const disableEdit = !manager && new Date(item.date).toDateString() !== new Date().toDateString()
                     return (
                         <TableRow key={index} className="hover:bg-gray-200">
                             <TableCell>{item.date}</TableCell>
-                            <TableCell>{taskName}</TableCell>
+                            <TableCell className={targetTask ? "" : "bg-red-500"}>{taskName}</TableCell>
                             <TableCell>{item.startTime}</TableCell>
                             <TableCell>{item.endTime}</TableCell>
                             <TableCell>{item.workingHour.toFixed(3)}</TableCell>
