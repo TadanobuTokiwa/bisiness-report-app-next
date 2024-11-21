@@ -2,17 +2,17 @@ import { listItemType, taskItemType } from "@/types/firebaseDocTypes";
 
 type propsType = {
     data: listItemType[],
-    taskItems: taskItemType[],
+    allTaskItems: taskItemType[],
     filename: string,
 }
 
-export const downloadCSV = ({data, taskItems, filename}: propsType) => {
+export const downloadCSV = ({data, allTaskItems, filename}: propsType) => {
     if (!data || !data.length) return;
 
     const headers = ["日付", "業務項目", "開始時間", "終了時間", "業務時間", "件数", "時速", "従業員名"];
 
     const rows = data.map((item) => {
-        const taskItem = taskItems?.filter(taskItem => String(taskItem.id) === item.task)
+        const taskItem = allTaskItems?.filter(taskItem => String(taskItem.id) === item.task)
         const taskName = taskItem.length === 1 ? taskItem[0].taskName ? taskItem[0].taskName : "" : ""
         return ([
             item.date,

@@ -41,6 +41,7 @@ const SendList = () => {
                 setIsLoading={setIsLoading} 
                 setAllItems={setAllItems} 
                 taskItems={taskItems}
+                allTaskItems={allTaskItems}
                 allItems={allItems}
                 setCurrentPage={setCurrentPage}
                 userName={userName!}

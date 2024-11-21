@@ -12,12 +12,13 @@ type ChildComponentProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     setAllItems: React.Dispatch<React.SetStateAction<listItemType[]>>;
     taskItems: taskItemType[];
+    allTaskItems: taskItemType[];
     allItems: listItemType[];
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
     userName: string
 };
 
-const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentPage, userName}: ChildComponentProps) => {
+const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItems, setCurrentPage, userName}: ChildComponentProps) => {
     const [startDate, setStartDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
     const [endDate, setEndDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
     const [searchName, setSearchName] = useState<string>(userName);
@@ -81,14 +82,14 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allItems, setCurrentP
             return "" + now.getFullYear() + padZero(now.getMonth() + 1) + padZero(now.getDate()) + padZero(now.getHours()) + padZero(now.getMinutes());
         };
 
-        if(!taskItems) {
+        if(!allTaskItems) {
             window.alert("業務項目名が正しく読み込めていません。")
             return
         }
         const csvName = "業務報告_" + getCurrentDatetime();
         const props = {
             data: allItems,
-            taskItems,
+            allTaskItems,
             filename: csvName,
         }
         downloadCSV(props)
