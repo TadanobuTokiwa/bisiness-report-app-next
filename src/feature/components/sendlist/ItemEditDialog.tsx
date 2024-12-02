@@ -33,13 +33,13 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
             kensu: newItem.kensu,
             perHour: newItem.perHour,
             userName: editingItem!.userName,
-            docID: editingItem!.docID
+            id: editingItem!.id
         }
 
         setIsEditDialogOpen(false);
         setAllItems(prevItems =>
             prevItems.map(item =>
-                item.docID === updateTask!.docID ? { ...updateTask } : { ...item }
+                item.id === updateTask!.id ? { ...updateTask } : { ...item }
             )
         );
     }

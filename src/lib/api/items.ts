@@ -1,4 +1,4 @@
-import { listItemType, postItemType } from "@/types/firebaseDocTypes";
+import { fetchItemType, listItemType, postItemType } from "@/types/firebaseDocTypes";
 
 type fetchItemsPropsType = {
     startDate: string;
@@ -87,8 +87,8 @@ export const fetchItems = async ({startDate, endDate, userEmail}: fetchItemsProp
         }
 
         const responseData = await response.json();
-        console.log(responseData.data);
-        const fetchData = responseData.data.map((data: postItemType) => ({
+        const fetchData = responseData.data.map((data: fetchItemType) => ({
+            id: data.id,
             date: data.createDate,
             task: data.task,
             startTime: data.startTime,
