@@ -68,8 +68,8 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
                 業務項目
                 </Label>
                 <Select
-                value={editingItem.task}
-                onValueChange={(value) => setEditingItem({...editingItem, task: value})}
+                value={String(editingItem.task)}
+                onValueChange={(value) => setEditingItem({...editingItem, task: Number(value)})}
                 >
                 <SelectTrigger id="edit-task" className="col-span-3">
                     <SelectValue placeholder="業務項目を選択" />

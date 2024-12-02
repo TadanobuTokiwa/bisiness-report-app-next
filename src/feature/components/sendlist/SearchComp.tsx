@@ -4,9 +4,10 @@ import { CardContent} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchAllUserItems, fetchAllUserTaskFilterdItems, fetchItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
+import { fetchAllUserItems, fetchAllUserTaskFilterdItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
 import { downloadCSV } from '@/lib/CSVdownloader'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
+import { fetchItems } from "@/lib/api/items"
 
 type ChildComponentProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;

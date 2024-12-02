@@ -9,7 +9,7 @@ export interface taskItemType {
 
 export interface postItemType {
     createDate: string;
-    task: string;
+    task: number;
     startTime: string;
     endTime: string;
     kensu: number;
@@ -21,7 +21,7 @@ export interface postItemType {
 
 export interface listItemType{
     date: string;
-    task: string,
+    task: number,
     startTime: string,
     endTime: string,
     workingHour: number,

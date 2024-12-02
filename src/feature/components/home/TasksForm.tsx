@@ -7,10 +7,10 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { addItem } from "@/lib/firebase/firebaseStoreFunctions";
 import { postItemType, taskItemType } from "@/types/firebaseDocTypes";
 import { useAuth } from "@/context/AuthContext";
 import { useTasks } from "@/hooks/useTasks";
+import { addItem } from "@/lib/api/items";
 
 interface updateTaskAction{
     id: number;
@@ -85,10 +85,10 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                 const perHour = task.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (task.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
                 const newTask: postItemType = {
                     "createDate": date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,'0') + "-" + String(date.getDate()).padStart(2,'0'),
-                    "task": task.task,
+                    "task": Number(task.task),
                     "startTime": task.startTime,
                     "endTime": task.endTime,
-                    "kensu": task.kensu,
+                    "kensu": Number(task.kensu),
                     "User": postName,
                     "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
                     "perHour": perHour,

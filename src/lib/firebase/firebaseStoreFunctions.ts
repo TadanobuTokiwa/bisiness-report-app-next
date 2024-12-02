@@ -1,14 +1,8 @@
 import { addDoc, collection, doc, DocumentData, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { googleProvider, getFirebaseServices } from "../../services/firebaseConfig";
-import { listItemType, postItemType, taskItemType } from "@/types/firebaseDocTypes";
+import { listItemType, taskItemType } from "@/types/firebaseDocTypes";
 import { signInWithPopup, signOut } from "firebase/auth";
 import Cookies from 'js-cookie';
-
-type fetchItemsPropsType = {
-    startDate: string;
-    endDate: string;
-    userName: string;
-}
 
 type fetchAllUserItemsPropsType = {
     startDate: string;
@@ -26,62 +20,6 @@ type fetchAllUserTaskFilterdItemsPropsType = {
     startDate: string;
     endDate: string;
     task: string;
-}
-
-export const fetchTasks = async (): Promise<taskItemType[]> => {
-
-    const{ db } = getFirebaseServices()
-
-    const q = query(
-        collection(db, "taskManager"),
-        where("chk", "==", true),
-        orderBy("orderNum", "asc")
-    );
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => {
-        const data = doc.data() as DocumentData
-        const docID = doc.id
-        return({
-            id: data.id,
-            chk: data.chk,
-            color: data.color,
-            orderNum: data.orderNum,
-            taskName: data.taskName,
-            docID
-        }) as taskItemType
-    });
-};
-
-export const addItem = async (newTask: postItemType) => {
-    const{ db } = getFirebaseServices()
-    await addDoc(collection(db, "task"), newTask)
-}
-
-export const fetchItems = async ({startDate, endDate, userName}: fetchItemsPropsType) => {
-    const{ db } = getFirebaseServices()
-    const q = query(
-        collection(db, "task"),
-        where("User" , "==" , userName),
-        where("DateTimeNum", "<=", Number(endDate.replaceAll("-","") + "2359")),
-        where("DateTimeNum", ">=", Number(startDate.replaceAll("-","") + "0000")),
-        orderBy("DateTimeNum" , "asc")
-    );
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => {
-        const data = doc.data() as DocumentData
-        const docID = doc.id
-        return({
-            date: data.createDate,
-            task: data.task,
-            startTime: data.startTime,
-            endTime: data.endTime,
-            workingHour: data.workingHour,
-            kensu: data.kensu,
-            perHour: data.perHour,
-            userName: data.User,
-            docID
-        }) as listItemType
-    });
 }
 
 export const fetchAllUserItems = async ({startDate, endDate}: fetchAllUserItemsPropsType) => {
