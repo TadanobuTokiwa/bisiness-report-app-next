@@ -16,13 +16,13 @@ type ChildComponentProps = {
     allTaskItems: taskItemType[];
     allItems: listItemType[];
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-    userName: string
+    userEmail: string
 };
 
-const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItems, setCurrentPage, userName}: ChildComponentProps) => {
+const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItems, setCurrentPage, userEmail}: ChildComponentProps) => {
     const [startDate, setStartDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
     const [endDate, setEndDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
-    const [searchName, setSearchName] = useState<string>(userName);
+    const [searchName, setSearchName] = useState<string>(userEmail);
     const [task, setTask] = useState('ALL');
 
     const searchClickHandler = async() => {
@@ -55,7 +55,7 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItem
                 const props = {
                     startDate,
                     endDate,
-                    userName: searchName
+                    userEmail: searchName
                 }
                 const items = await fetchItems(props)
                 setAllItems(items)
@@ -122,13 +122,13 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItem
                 />
             </div>
             <div className="md:col-span-1 lg:col-span-1">
-                <Label htmlFor="employee">従業員名</Label>
+                <Label htmlFor="employee">メールアドレス</Label>
                 <Select value={searchName} onValueChange={setSearchName}>
                 <SelectTrigger id="employee">
                     <SelectValue placeholder="従業員を選択" />
                 </SelectTrigger>
                 <SelectContent className='bg-gray-100'>
-                    <SelectItem value={userName}>{userName}</SelectItem>
+                    <SelectItem value={userEmail}>{userEmail}</SelectItem>
                 </SelectContent>
                 </Select>
             </div>

@@ -18,7 +18,8 @@ const SendList = () => {
     const [editingItem, setEditingItem] = useState<listItemType | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
-    const { userName } = useAuth();
+    const { user } = useAuth();
+    const userEmail = user?.email;
     const itemsPerPage = 10
 
     const { data } = useTasks();
@@ -44,7 +45,7 @@ const SendList = () => {
                 allTaskItems={allTaskItems}
                 allItems={allItems}
                 setCurrentPage={setCurrentPage}
-                userName={userName!}
+                userEmail={userEmail!}
             />
             <TasksTable
                 currentItems={currentItems}

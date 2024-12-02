@@ -3,7 +3,7 @@ import { listItemType, postItemType } from "@/types/firebaseDocTypes";
 type fetchItemsPropsType = {
     startDate: string;
     endDate: string;
-    userName: string;
+    userEmail: string;
 }
 
 export const addItem = async(newTask: postItemType) => {
@@ -41,7 +41,7 @@ export const addItem = async(newTask: postItemType) => {
     }
 }
 
-export const fetchItems = async ({startDate, endDate, userName}: fetchItemsPropsType) => {
+export const fetchItems = async ({startDate, endDate, userEmail}: fetchItemsPropsType) => {
     const url = "https://logiapp.rextlab.com/api/fetch-data"
     const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
@@ -50,8 +50,8 @@ export const fetchItems = async ({startDate, endDate, userName}: fetchItemsProps
         "conditions": [
             {
                 "column": "User",
-                "operator": "==",
-                "value": userName
+                "operator": "=",
+                "value": userEmail
             },
             {
                 "column": "DateTimeNum",
@@ -65,7 +65,7 @@ export const fetchItems = async ({startDate, endDate, userName}: fetchItemsProps
             },
         ],
         "order_by": {
-            "column": "DateTimeNum",
+            "column": "id",
             "direction": "asc"
         }
     };

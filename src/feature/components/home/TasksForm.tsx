@@ -33,8 +33,8 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
     const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     const { tasks } = useAppSelector((store) => store.tasks);
     const dispatch = useDispatch()
-    const { userName } = useAuth();
-    const postName = postUserName === "" && userName ? userName : postUserName
+    const { user } = useAuth();
+    const postUserEmail = postUserName === "" && user?.email ? user.email : postUserName
 
     const { data } = useTasks();
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
@@ -69,7 +69,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
             window.alert("入力内容を確認してください");
             return
         }
-        if(!userName){
+        if(!postUserEmail){
             window.alert("ユーザー情報を確認してください");
             return
         }
@@ -89,7 +89,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                     "startTime": task.startTime,
                     "endTime": task.endTime,
                     "kensu": Number(task.kensu),
-                    "User": postName,
+                    "User": postUserEmail,
                     "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
                     "perHour": perHour,
                     "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))
