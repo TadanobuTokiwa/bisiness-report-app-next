@@ -125,9 +125,9 @@ const addDialog = ({
                 <div className="col-span-3 flex items-center space-x-2">
                 <Checkbox
                     id="new-task-visible"
-                    checked={newTask.chk}
+                    checked={newTask.chk !== 0}
                     onCheckedChange={(checked: boolean) =>
-                    setNewTask({ ...newTask, chk: checked })
+                    setNewTask({ ...newTask, chk: checked ? 1 : 0})
                     }
                 />
                 <label htmlFor="new-task-visible" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

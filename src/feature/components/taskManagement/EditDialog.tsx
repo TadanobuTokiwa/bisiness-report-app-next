@@ -7,6 +7,7 @@ import { taskItemType } from "@/types/firebaseDocTypes"
 
 type ChildComponentProps = {
     editingTask: taskItemType | null;
+    addedItems: (taskItemType | null)[];
     setTasks: React.Dispatch<React.SetStateAction<(taskItemType | null)[]>>;
     setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
     setEditingTask: React.Dispatch<React.SetStateAction<taskItemType | null>>
@@ -16,7 +17,8 @@ type ChildComponentProps = {
 };
 
 const EditDialog = ({
-        editingTask, 
+        editingTask,
+        addedItems,
         setTasks, 
         setIsEditDialogOpen, 
         setEditingTask, 
@@ -44,7 +46,8 @@ const EditDialog = ({
         setIsEditDialogOpen(false)
         setEditingTask(null)
         
-        if(editingTask.docID === ""){
+        const is_added = addedItems.filter(addedItem => addedItem && addedItem.id === editingTask.id).length
+        if(is_added){
             setAddedItems((prevItems) =>
                 prevItems.map((task) =>
                     task!.id === editingTask!.id ? editingTask : task
@@ -143,9 +146,9 @@ const EditDialog = ({
                 <div className="col-span-3 flex items-center space-x-2">
                 <Checkbox
                     id="task-visible"
-                    checked={editingTask.chk}
+                    checked={editingTask.chk !== 0}
                     onCheckedChange={(checked: boolean) =>
-                    setEditingTask({ ...editingTask, chk: checked })
+                    setEditingTask({ ...editingTask, chk: checked ? 1 : 0 })
                     }
                 />
                 <label htmlFor="task-visible" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

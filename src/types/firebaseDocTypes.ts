@@ -1,10 +1,9 @@
 export interface taskItemType {
-    chk: boolean;
+    chk: number;
     color: string;
     id: number;
     orderNum: number;
     taskName: string;
-    docID: string;
 }
 
 export interface postItemType {
