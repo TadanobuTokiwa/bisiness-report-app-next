@@ -1,6 +1,6 @@
-import { addDoc, collection, doc, DocumentData, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { collection, doc, DocumentData, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { googleProvider, getFirebaseServices } from "../../services/firebaseConfig";
-import { listItemType, taskItemType } from "@/types/firebaseDocTypes";
+import { listItemType } from "@/types/firebaseDocTypes";
 import { signInWithPopup, signOut } from "firebase/auth";
 import Cookies from 'js-cookie';
 

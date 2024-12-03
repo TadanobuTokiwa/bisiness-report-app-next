@@ -6,9 +6,10 @@ type fetchItemsPropsType = {
     userEmail: string;
 }
 
+const token = process.env.NEXT_PUBLIC_API_TOKEN;
+
 export const addItem = async(newTask: postItemType) => {
     const url = "https://logiapp.rextlab.com/api/insert-data"
-    const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
     const payload = {
         table_name: "firebase_tasks",
@@ -43,7 +44,6 @@ export const addItem = async(newTask: postItemType) => {
 
 export const fetchItems = async ({startDate, endDate, userEmail}: fetchItemsPropsType) => {
     const url = "https://logiapp.rextlab.com/api/fetch-data"
-    const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
     const payload = {
         "table_name": "firebase_tasks",
@@ -64,10 +64,6 @@ export const fetchItems = async ({startDate, endDate, userEmail}: fetchItemsProp
                 "value": `${startDate.replaceAll("-", "")}0000`
             },
         ],
-        "order_by": {
-            "column": "id",
-            "direction": "asc"
-        }
     };
 
     try {
