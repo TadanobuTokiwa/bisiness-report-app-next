@@ -30,7 +30,6 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                 <TableHead>業務項目</TableHead>
                 <TableHead>開始時間</TableHead>
                 <TableHead>終了時間</TableHead>
-                <TableHead>業務時間</TableHead>
                 <TableHead>件数</TableHead>
                 <TableHead>時速</TableHead>
                 <TableHead>メールアドレス</TableHead>
@@ -39,7 +38,6 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
             </TableHeader>
             <TableBody className='bg-zinc-50'>
                 {currentItems.map((item, index) => {
-                    console.log(item)
                     const targetTask = taskItems?.filter(taskItem => taskItem.id === item.task)[0]
                     const taskName = targetTask ? targetTask.taskName : "エラー"
                     const disableEdit = !manager && new Date(item.date).toDateString() !== new Date().toDateString()
@@ -50,7 +48,6 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                             <TableCell className={targetTask ? "" : "bg-red-500"}>{taskName}</TableCell>
                             <TableCell>{item.startTime}</TableCell>
                             <TableCell>{item.endTime}</TableCell>
-                            <TableCell>{item.workingHour}</TableCell>
                             <TableCell>{item.kensu}</TableCell>
                             <TableCell>{item.perHour}</TableCell>
                             <TableCell>{item.userName.split("@")[0]}</TableCell>
