@@ -49,6 +49,8 @@ const TaskManageFooter = ({
             updateTaskManager(editTasks)
             setChangedItems([])
         }
+
+        window.alert("保存完了しました")
     }
 
     const handleReturn = () => {
