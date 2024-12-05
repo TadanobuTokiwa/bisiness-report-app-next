@@ -9,9 +9,10 @@ type ChildComponentProps = {
     setEditingItem: React.Dispatch<React.SetStateAction<listItemType | null>>;
     setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
     manager: boolean
+    isLoading: boolean
 };
 
-const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpen, manager}: ChildComponentProps) => {
+const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpen, manager, isLoading}: ChildComponentProps) => {
 
     const editButtonHandler = (searchId: number) => {
         const targetItem = currentItems.filter(item => item.id === searchId)[0];
@@ -56,6 +57,7 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                                 className={disableEdit ? "invisible" : 'hover:bg-gray-200'} 
                                 variant="outline" 
                                 size="sm"
+                                disabled={isLoading}
                                 onClick={() => !disableEdit && editButtonHandler(item.id)}
                             >編集</Button>
                             </TableCell>

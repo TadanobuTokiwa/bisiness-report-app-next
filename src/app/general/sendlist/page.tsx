@@ -53,6 +53,7 @@ const SendList = () => {
                 setEditingItem={setEditingItem}
                 setIsEditDialogOpen={setIsEditDialogOpen}
                 manager={false}
+                isLoading={isLoading}
             />
             <ListFooter
                 isLoading={isLoading}
