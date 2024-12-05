@@ -12,9 +12,16 @@ import { useAuth } from "@/context/AuthContext";
 import { useTasks } from "@/hooks/useTasks";
 import { addItem } from "@/lib/api/items";
 
+interface tasks {
+    id: number;
+    task: string;
+    startTime: string;
+    endTime: string;
+    kensu: number;
+}
 interface updateTaskAction{
     id: number;
-    field: string;
+    field: keyof tasks;
     value: string | number;
 }
 

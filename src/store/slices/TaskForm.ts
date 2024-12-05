@@ -12,7 +12,7 @@ interface initialState {
 }
 interface updateTaskAction{
     id: number;
-    field: string;
+    field: keyof tasks;
     value: string | number;
 }
 
@@ -43,13 +43,16 @@ const taskSlice = createSlice({
             }
         },
         updateTask: (state, action: PayloadAction<updateTaskAction>) => {
-            state.tasks = state.tasks.map(task => {
-                return (
-                    task.id === action.payload.id ? 
-                    { ...task, [action.payload.field]: action.payload.value } : 
-                    task
-                )
-            })
+            const { id, field, value } = action.payload
+            if(field in state.tasks[0]) {
+                state.tasks = state.tasks.map(task => {
+                    return (
+                        task.id === id ? 
+                        { ...task, [field]: value } : 
+                        task
+                    )
+                })
+            }
         },
         resetTask: (state) => {
             state.tasks = [

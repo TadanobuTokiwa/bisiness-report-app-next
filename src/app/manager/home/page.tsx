@@ -16,7 +16,7 @@ const ManagerHome = () => {
     const [postDate, setPostDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
 
     const router = useRouter();
-    const { userName } = useAuth();
+    const { userName, user } = useAuth();
 
     const reset = () => {
         setCardMoved(false);
@@ -52,10 +52,10 @@ const ManagerHome = () => {
                             className='w-28'
                             value={postUserName}
                             onChange={(e) => setPostUserName(e.target.value)}
-                            placeholder='投稿ユーザー名' 
+                            placeholder='投稿ユーザーアドレス' 
                         />
                         <p className='pt-1 text-xs'>※空欄の場合</p>
-                        <p className='text-xs'>{userName} で投稿</p>
+                        <p className='text-xs'>{user?.email} で投稿</p>
                     </div>
                     <div>
                         <Input
