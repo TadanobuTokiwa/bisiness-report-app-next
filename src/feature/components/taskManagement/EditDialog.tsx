@@ -1,4 +1,4 @@
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -69,6 +69,9 @@ const EditDialog = ({
         <DialogContent className='bg-slate-50'>
         <DialogHeader>
             <DialogTitle>業務項目の編集</DialogTitle>
+            <DialogDescription>
+                編集後、保存ボタンを押してください
+            </DialogDescription>
         </DialogHeader>
         {editingTask && (
             <div className="grid gap-4 py-4">
