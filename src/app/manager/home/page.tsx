@@ -46,10 +46,10 @@ const ManagerHome = () => {
             {cardMoved ? 
                 <div className="invisible"></div>
                 :
-                <div className="grid grid-cols-2">
+                <div className="grid grid-rows-2 gap-4 sm:grid-cols-2 sm:gap-1">
                     <div>
                         <Input 
-                            className='w-28'
+                            className='w-52'
                             value={postUserName}
                             onChange={(e) => setPostUserName(e.target.value)}
                             placeholder='投稿ユーザーアドレス' 
