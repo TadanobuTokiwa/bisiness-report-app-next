@@ -17,6 +17,13 @@ export const store = configureStore({
         templates: persistedReducer,
         tasks: taskSliceReducer
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+            },
+        }
+    ),
 });
 
 export const persistor = persistStore(store);
