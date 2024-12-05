@@ -116,13 +116,11 @@ const Template = () => {
                                         e.stopPropagation()
                                         selectTemplate(template.tasks)
                                     }}
-                                    key={index}
                                 >{template.templateName}</span>
                                 <Button
                                 className="hover:bg-gray-200"
                                 variant="ghost"
                                 size="icon"
-                                key={index}
                                 onClick={(e) => {
                                     e.stopPropagation()
                                     editTemplateName(template.id, template.templateName)
