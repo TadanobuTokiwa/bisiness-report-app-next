@@ -25,12 +25,13 @@ type fetchAllUserTaskFilterdItemsPropsType = {
 }
 
 const token = process.env.NEXT_PUBLIC_API_TOKEN;
+const table_name = "firebase_tasks"
 
 export const addItem = async(newTask: postItemType) => {
     const url = "https://logiapp.rextlab.com/api/insert-data"
 
     const payload = {
-        table_name: "firebase_tasks",
+        table_name,
         data: [
             newTask
         ],
@@ -64,7 +65,7 @@ export const fetchItems = async ({startDate, endDate, userEmail}: fetchItemsProp
     const url = "https://logiapp.rextlab.com/api/fetch-data"
 
     const payload = {
-        "table_name": "firebase_tasks",
+        table_name,
         "conditions": [
             {
                 "column": "User",
@@ -114,7 +115,7 @@ export const fetchAllUserItems = async ({startDate, endDate}: fetchAllUserItemsP
     const url = "https://logiapp.rextlab.com/api/fetch-data"
 
     const payload = {
-        "table_name": "firebase_tasks",
+        table_name,
         "conditions": [
             {
                 "column": "DateTimeNum",
@@ -159,7 +160,7 @@ export const fetchTaskFilterdItems = async ({startDate, endDate, userEmail, task
     const url = "https://logiapp.rextlab.com/api/fetch-data"
 
     const payload = {
-        "table_name": "firebase_tasks",
+        table_name,
         "conditions": [
             {
                 "column": "User",
@@ -214,7 +215,7 @@ export const fetchAllUserTaskFilterdItems = async ({startDate, endDate, task}: f
     const url = "https://logiapp.rextlab.com/api/fetch-data"
 
     const payload = {
-        "table_name": "firebase_tasks",
+        table_name,
         "conditions": [
             {
                 "column": "DateTimeNum",
@@ -285,7 +286,7 @@ export const updateItem = async(editItem: listItemType) => {
     }
 
     const payload = {
-        table_name: "firebase_tasks",
+        table_name,
         records: [
             newData
         ],

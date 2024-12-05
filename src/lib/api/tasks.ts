@@ -1,13 +1,14 @@
 import { taskItemType } from "@/types/firebaseDocTypes"
 
 const token = process.env.NEXT_PUBLIC_API_TOKEN;
+const table_name = "firebase_taskManagers"
 
 export const fetchTasks = async (): Promise<taskItemType[]> => {
 
     const url = "https://logiapp.rextlab.com/api/fetch-data"
 
     const payload = {
-        "table_name": "firebase_taskManagers",
+        table_name,
         "conditions": [
             {
                 "column": "chk",
@@ -50,7 +51,7 @@ export const fetchAllTasks = async (): Promise<taskItemType[]> => {
     const url = "https://logiapp.rextlab.com/api/fetch-data"
 
     const payload = {
-        "table_name": "firebase_taskManagers",
+        table_name,
         "conditions": [],
     };
 
@@ -95,7 +96,7 @@ export const addTaskManager = async (newTasks: taskItemType[]) => {
     })
 
     const payload = {
-        table_name: "firebase_taskManagers",
+        table_name,
         data: newData,
     };
 
@@ -136,7 +137,7 @@ export const updateTaskManager = async(editItem: taskItemType[]) => {
     ))
 
     const payload = {
-        table_name: "firebase_taskManagers",
+        table_name,
         records: newData,
     };
 
