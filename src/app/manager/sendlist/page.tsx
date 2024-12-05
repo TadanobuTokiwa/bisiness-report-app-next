@@ -42,7 +42,7 @@ const SendList = () => {
                 allTaskItems={allTaskItems}
                 allItems={allItems}
                 setCurrentPage={setCurrentPage}
-                userName="ALL"
+                userEmail="ALL"
             />
             <TasksTable
                 currentItems={currentItems}

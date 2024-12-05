@@ -4,10 +4,9 @@ import { CardContent} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchAllUserItems, fetchAllUserTaskFilterdItems, fetchTaskFilterdItems } from '@/lib/firebase/firebaseStoreFunctions'
 import { downloadCSV } from '@/lib/CSVdownloader'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
-import { fetchItems } from "@/lib/api/items"
+import { fetchItems, fetchAllUserItems, fetchAllUserTaskFilterdItems, fetchTaskFilterdItems  } from "@/lib/api/items"
 
 type ChildComponentProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,7 +62,7 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItem
                 const props = {
                     startDate,
                     endDate,
-                    userName: searchName,
+                    userEmail: searchName,
                     task
                 }
                 const items = await fetchTaskFilterdItems(props)

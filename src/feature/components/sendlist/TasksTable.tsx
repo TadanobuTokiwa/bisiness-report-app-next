@@ -40,17 +40,17 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                 {currentItems.map((item, index) => {
                     const targetTask = taskItems?.filter(taskItem => taskItem.id === item.task)[0]
                     const taskName = targetTask ? targetTask.taskName : "エラー"
-                    const disableEdit = !manager && new Date(item.date).toDateString() !== new Date().toDateString()
+                    const disableEdit = !manager && new Date(item.createDate).toDateString() !== new Date().toDateString()
                     return (
                         <TableRow key={index} className="hover:bg-gray-200">
                             <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.date}</TableCell>
+                            <TableCell>{item.createDate}</TableCell>
                             <TableCell className={targetTask ? "" : "bg-red-500"}>{taskName}</TableCell>
                             <TableCell>{item.startTime}</TableCell>
                             <TableCell>{item.endTime}</TableCell>
                             <TableCell>{item.kensu}</TableCell>
                             <TableCell>{item.perHour}</TableCell>
-                            <TableCell>{item.userName.split("@")[0]}</TableCell>
+                            <TableCell>{item.User.split("@")[0]}</TableCell>
                             <TableCell>
                             <Button 
                                 className={disableEdit ? "invisible" : 'hover:bg-gray-200'} 

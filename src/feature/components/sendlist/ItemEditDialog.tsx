@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { updateItem } from '@/lib/firebase/firebaseStoreFunctions'
+import { updateItem } from '@/lib/api/items'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
 
 type ChildComponentProps = {
@@ -17,29 +17,21 @@ type ChildComponentProps = {
 const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditingItem, taskItems}: ChildComponentProps) => {
 
     const handleEditSave = async() => {
-        const {newItem, error} = await updateItem(editingItem!)
-        
-        if(error && !newItem){
-            window.alert("エラーが発生しました。")
+        if(!editingItem){
             return
         }
 
-        const updateTask = {
-            date: newItem.createDate,
-            task: newItem.task,
-            startTime: newItem.startTime,
-            endTime: newItem.endTime,
-            workingHour: newItem.workingHour,
-            kensu: newItem.kensu,
-            perHour: newItem.perHour,
-            userName: editingItem!.userName,
-            id: editingItem!.id
+        const {responseData, newData} = await updateItem(editingItem)
+        
+        if(!responseData.success){
+            window.alert("エラーが発生しました。")
+            return
         }
 
         setIsEditDialogOpen(false);
         setAllItems(prevItems =>
             prevItems.map(item =>
-                item.id === updateTask!.id ? { ...updateTask } : { ...item }
+                item.id === newData.data.id ? { ...newData.data } : { ...item }
             )
         );
     }
@@ -58,8 +50,8 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
                 <Input
                 id="edit-date"
                 type="date"
-                value={editingItem.date}
-                onChange={(e) => setEditingItem({...editingItem, date: e.target.value})}
+                value={editingItem.createDate}
+                onChange={(e) => setEditingItem({...editingItem, createDate: e.target.value})}
                 className="col-span-3"
                 />
             </div>

@@ -18,7 +18,7 @@ export interface postItemType {
     DateTimeNum: number;
 }
 
-export interface fetchItemType {
+export interface listItemType {
     id: number;
     createDate: string;
     task: number;
@@ -29,16 +29,4 @@ export interface fetchItemType {
     workingHour: number;
     perHour: number;
     DateTimeNum: number;
-}
-
-export interface listItemType{
-    id: number,
-    date: string,
-    task: number,
-    startTime: string,
-    endTime: string,
-    workingHour: number,
-    kensu: number,
-    perHour: number,
-    userName: string,
 }
