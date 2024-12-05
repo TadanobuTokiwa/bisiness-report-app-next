@@ -47,6 +47,17 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
         {editingItem && (
             <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="task-id" className="text-right">
+                ID
+                </Label>
+                <Input
+                id="task-id"
+                value={editingItem.id}
+                className="col-span-3"
+                disabled
+                />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-date" className="text-right">
                 日付
                 </Label>
