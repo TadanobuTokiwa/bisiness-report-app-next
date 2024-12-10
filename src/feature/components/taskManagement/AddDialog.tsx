@@ -97,6 +97,34 @@ const addDialog = ({
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-task-name" className="text-right">
+                チーム名
+                </Label>
+                <Input
+                id="new-task-name"
+                value={newTask.teamName}
+                onChange={(e) =>
+                    setNewTask({ ...newTask, teamName: e.target.value })
+                }
+                maxLength={5}
+                className="col-span-3"
+                />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-task-name" className="text-right">
+                業務項目種別
+                </Label>
+                <Input
+                id="new-task-name"
+                value={newTask.taskType}
+                onChange={(e) =>
+                    setNewTask({ ...newTask, taskType: e.target.value })
+                }
+                maxLength={6}
+                className="col-span-3"
+                />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="new-task-color" className="text-right">
                 背景色
                 </Label>
@@ -142,7 +170,7 @@ const addDialog = ({
         )}
         <DialogFooter>
             <div className='w-full border border-black text-center bg-red-100 hover:bg-red-200'>
-                <Button onClick={() => handleAddSave()}>追加</Button>
+                <Button className="w-full" onClick={() => handleAddSave()}>追加</Button>
             </div>
         </DialogFooter>
         </DialogContent>

@@ -34,6 +34,8 @@ const TaskManageFooter = ({
             taskName: '',
             color: '#bbdefb',
             chk: 1,
+            teamName: '',
+            taskType: '',
         })
     }
 

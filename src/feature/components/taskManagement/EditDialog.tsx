@@ -118,6 +118,34 @@ const EditDialog = ({
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-task-name" className="text-right">
+                チーム名
+                </Label>
+                <Input
+                id="new-task-name"
+                value={editingTask.teamName}
+                onChange={(e) =>
+                    setEditingTask({ ...editingTask, teamName: e.target.value })
+                }
+                maxLength={5}
+                className="col-span-3"
+                />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-task-name" className="text-right">
+                業務項目種別
+                </Label>
+                <Input
+                id="new-task-name"
+                value={editingTask.taskType}
+                onChange={(e) =>
+                    setEditingTask({ ...editingTask, taskType: e.target.value })
+                }
+                maxLength={6}
+                className="col-span-3"
+                />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="task-color" className="text-right">
                 背景色
                 </Label>
@@ -163,7 +191,7 @@ const EditDialog = ({
         )}
         <DialogFooter>
             <div className='w-full border border-black text-center bg-gray-100 hover:bg-gray-200'>
-                <Button onClick={() => handleSave()}>保存</Button>
+                <Button className="w-full" onClick={() => handleSave()}>保存</Button>
             </div>
         </DialogFooter>
         </DialogContent>

@@ -4,6 +4,8 @@ export interface taskItemType {
     id: number;
     orderNum: number;
     taskName: string;
+    teamName: string;
+    taskType: string;
 }
 
 export interface postItemType {
