@@ -18,6 +18,7 @@ interface tasks {
     startTime: string;
     endTime: string;
     kensu: number;
+    team: string;
 }
 interface updateTaskAction{
     id: number;
@@ -45,6 +46,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
 
     const { data } = useTasks();
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
+    const taskTeams = [...new Set(taskItems.map(item => item.teamName))]
 
     const editTask = ({id, field, value}: updateTaskAction) => {
         if((field === "startTime" || field === "endTime") && typeof value === "string" && value.split(":").length === 3){
@@ -67,6 +69,11 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
     
     const addButtonHandler = () => {
         dispatch(addTask())
+    }
+
+    const teamNameCheanged = (id: number, value: string) => {
+        editTask({id, field: 'team', value});
+        editTask({id, field: 'task', value: ""})
     }
 
     const handleSubmit = async() => {
@@ -125,6 +132,25 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                 {tasks.map((task) => (
                     <div key={task.id} className="flex flex-col md:flex-row items-start md:items-center gap-2 p-2 rounded-md">
                     <Select
+                        value={task.team}
+                        onValueChange={(value) => teamNameCheanged(task.id, value)}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="チームを選択" />
+                        </SelectTrigger>
+                        <SelectContent className='bg-gray-100'>
+                            {taskTeams?.map((item,index) => {
+                                return(
+                                    <SelectItem 
+                                        key={index} 
+                                        value={item} 
+                                        className="hover:border-y border-black hover:brightness-110"
+                                    >{item}</SelectItem>
+                                )
+                            })}
+                        </SelectContent>
+                    </Select>
+                    <Select
                         value={task.task}
                         onValueChange={(value) => editTask({id: task.id, field: 'task', value})}
                     >
@@ -132,11 +158,14 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                             <SelectValue placeholder="タスクを選択" />
                         </SelectTrigger>
                         <SelectContent className='bg-gray-100'>
-                            {taskItems?.map((item,index) => {
+                            {taskItems?.filter(item => {
+                                return item.teamName === task.team
+                            }).map((item,index) => {
                                 return(
                                     <SelectItem 
                                         key={index} 
                                         value={String(item.id)} 
+                                        className="hover:border-y border-black hover:brightness-110"
                                         style={{"backgroundColor": item.color}}
                                     >{item.taskName}</SelectItem>
                                 )

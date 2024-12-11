@@ -6,6 +6,7 @@ interface tasks {
     startTime: string;
     endTime: string;
     kensu: number;
+    team: string;
 }
 interface initialState {
     tasks: tasks[];
@@ -18,7 +19,7 @@ interface updateTaskAction{
 
 const initialState: initialState = {
     tasks: [
-        { id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
+        { id: 1, team: '', task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
     ]
 }
 
@@ -30,6 +31,7 @@ const taskSlice = createSlice({
             const beforeTime = state.tasks[state.tasks.length - 1].endTime
             const newTask = { 
                 id: Math.floor(Math.random() * 10000000), 
+                team: '',
                 task: '', 
                 startTime: beforeTime, 
                 endTime: beforeTime, 
@@ -56,7 +58,7 @@ const taskSlice = createSlice({
         },
         resetTask: (state) => {
             state.tasks = [
-                { id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
+                { id: 1, team: '', task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
             ]
         },
         createTemplate: (state, action: PayloadAction<tasks[]>) => {
