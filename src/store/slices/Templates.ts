@@ -6,6 +6,7 @@ interface tasks {
     startTime: string;
     endTime: string;
     kensu: number;
+    team: string;
 }
 interface template {
     id: number;
