@@ -23,6 +23,9 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItem
     const [endDate, setEndDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
     const [searchName, setSearchName] = useState<string>(userEmail);
     const [task, setTask] = useState('ALL');
+    const [taskType, setTaskType] = useState('ALL');
+
+    const taskTypes = [...new Set(allTaskItems.map(item => item.taskType))]
 
     const searchClickHandler = async() => {
         // validation
@@ -97,28 +100,30 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItem
 
     return (
         <CardContent>
-        <div className="grid gap-4 mb-4 sm:grid-cols-3 lg:grid-cols-4">
-            <div className="md:col-span-1 lg:col-span-1">
-                <Label htmlFor="startDate">
-                    開始日<strong className='ml-3 text-red-500 text-xs'>※必須</strong>
-                </Label>
-                <Input
-                type="date"
-                id="startDate"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                />
-            </div>
-            <div className="md:col-span-1 lg:col-span-1">
-                <Label htmlFor="endDate">
-                    終了日<strong className='ml-3 text-red-500 text-xs'>※必須</strong>
-                </Label>
-                <Input
-                type="date"
-                id="endDate"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                />
+        <div className="grid gap-4 mb-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid gap-4 grid-cols-2">
+                <div className="md:col-span-1 lg:col-span-1">
+                    <Label htmlFor="startDate">
+                        開始日<strong className='ml-3 text-red-500 text-xs'>※必須</strong>
+                    </Label>
+                    <Input
+                    type="date"
+                    id="startDate"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    />
+                </div>
+                <div className="md:col-span-1 lg:col-span-1">
+                    <Label htmlFor="endDate">
+                        終了日<strong className='ml-3 text-red-500 text-xs'>※必須</strong>
+                    </Label>
+                    <Input
+                    type="date"
+                    id="endDate"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    />
+                </div>
             </div>
             <div className="md:col-span-1 lg:col-span-1">
                 <Label htmlFor="employee">メールアドレス</Label>
@@ -132,6 +137,27 @@ const SearchComp = ({setIsLoading, setAllItems, taskItems, allTaskItems, allItem
                 </Select>
             </div>
             <div className="sm:col-span-3 lg:col-span-1">
+                <Label htmlFor="taskType">業務項目種別</Label>
+                <Select value={taskType} onValueChange={setTaskType}>
+                <SelectTrigger id="taskType">
+                    <SelectValue placeholder="業務項目種別を選択" />
+                </SelectTrigger>
+                <SelectContent className='bg-gray-100'>
+                    <SelectItem value="ALL">ALL</SelectItem>
+                    {taskTypes.map((item,index) => {
+                        return(
+                            <SelectItem 
+                                key={index}
+                                value={item}
+                            >
+                                {item}
+                            </SelectItem>
+                        )
+                    })}
+                </SelectContent>
+                </Select>
+            </div>
+            <div className="sm:col-span-3 lg:col-span-3 2xl:col-span-1">
                 <Label htmlFor="tasks">業務項目</Label>
                 <Select value={task} onValueChange={setTask}>
                 <SelectTrigger id="task">
