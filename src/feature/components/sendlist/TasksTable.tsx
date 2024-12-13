@@ -32,7 +32,7 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                 <TableHead>開始時間</TableHead>
                 <TableHead>終了時間</TableHead>
                 <TableHead>件数</TableHead>
-                <TableHead>時速</TableHead>
+                <TableHead className="hidden lg:table-cell">時速</TableHead>
                 <TableHead>メールアドレス</TableHead>
                 <TableHead></TableHead>
                 </TableRow>
@@ -50,7 +50,7 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                             <TableCell>{item.startTime}</TableCell>
                             <TableCell>{item.endTime}</TableCell>
                             <TableCell>{item.kensu}</TableCell>
-                            <TableCell>{item.perHour}</TableCell>
+                            <TableCell className="hidden lg:table-cell">{item.perHour}</TableCell>
                             <TableCell>{item.User.split("@")[0]}</TableCell>
                             <TableCell>
                             <Button 
