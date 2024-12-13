@@ -6,17 +6,11 @@ type fetchItemsPropsType = {
     searchEmail: string;
     taskNumbers: number[];
 }
-type Condition = | {
+type Condition = {
     column: string;
     operator: string;
     value: string | number[];
 }
-| {
-    $or: Condition[];
-}
-| {
-    $and: Condition[];
-};
 
 const token = process.env.NEXT_PUBLIC_API_TOKEN;
 const table_name = "firebase_tasks"
