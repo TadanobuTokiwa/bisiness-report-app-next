@@ -15,6 +15,7 @@ export interface postItemType {
     endTime: string;
     kensu: number;
     User: string;
+    UserName: string;
     workingHour: number;
     perHour: number;
     DateTimeNum: number;
@@ -28,6 +29,7 @@ export interface listItemType {
     endTime: string;
     kensu: number;
     User: string;
+    UserName: string;
     workingHour: number;
     perHour: number;
     DateTimeNum: number;

@@ -29,11 +29,12 @@ interface updateTaskAction{
 type ChildComponentProps = {
     cardMoved: boolean;
     setCardMoved: React.Dispatch<React.SetStateAction<boolean>>;
-    postUserName: string;
+    postUserEmail: string;
     postDate: string;
+    userName: string;
 };
 
-const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildComponentProps) => {
+const TasksForm = ({cardMoved, setCardMoved, postUserEmail, postDate, userName}: ChildComponentProps) => {
 
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false)
@@ -42,7 +43,8 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
     const { tasks } = useAppSelector((store) => store.tasks);
     const dispatch = useDispatch()
     const { user } = useAuth();
-    const postUserEmail = postUserName === "" && user?.email ? user.email : postUserName
+    const postEmail = postUserEmail === "" && user?.email ? user.email : postUserEmail
+    const postName = userName === "" && user?.displayName ? user.displayName : userName
 
     const { data } = useTasks();
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
@@ -83,7 +85,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
             window.alert("入力内容を確認してください");
             return
         }
-        if(!postUserEmail){
+        if(!postEmail){
             window.alert("ユーザー情報を確認してください");
             return
         }
@@ -103,7 +105,8 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                     "startTime": task.startTime,
                     "endTime": task.endTime,
                     "kensu": Number(task.kensu),
-                    "User": postUserEmail,
+                    "User": postEmail,
+                    "UserName": postName,
                     "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
                     "perHour": perHour,
                     "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))

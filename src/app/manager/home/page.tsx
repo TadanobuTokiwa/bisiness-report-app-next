@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 const ManagerHome = () => {
     const [cardMoved, setCardMoved] = useState<boolean>(false);
     const [postUserName, setPostUserName] = useState<string>("");
+    const [postUserEmail, setPostUserEmail] = useState<string>("");
     const [postDate, setPostDate] = useState<string>(new Date().toLocaleDateString('sv-SE'));
 
     const router = useRouter();
@@ -38,8 +39,9 @@ const ManagerHome = () => {
                 <TasksForm 
                 cardMoved={cardMoved} 
                 setCardMoved={setCardMoved}
-                postUserName={postUserName}
+                postUserEmail={postUserEmail}
                 postDate={postDate}
+                userName={postUserName}
                 />
             }
             <div className={`${cardMoved ? 'mt-12' : 'mt-4'} flex justify-between`}>
@@ -50,12 +52,22 @@ const ManagerHome = () => {
                     <div>
                         <Input 
                             className='w-52'
-                            value={postUserName}
-                            onChange={(e) => setPostUserName(e.target.value)}
+                            value={postUserEmail}
+                            onChange={(e) => setPostUserEmail(e.target.value)}
                             placeholder='投稿ユーザーアドレス' 
                         />
                         <p className='pt-1 text-xs'>※空欄の場合</p>
                         <p className='text-xs'>{user?.email} で投稿</p>
+                    </div>
+                    <div>
+                        <Input 
+                            className='w-52'
+                            value={postUserName}
+                            onChange={(e) => setPostUserName(e.target.value)}
+                            placeholder='投稿ユーザー名' 
+                        />
+                        <p className='pt-1 text-xs'>※空欄の場合</p>
+                        <p className='text-xs'>{user?.displayName} で投稿</p>
                     </div>
                     <div>
                         <Input

@@ -34,6 +34,7 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                 <TableHead>件数</TableHead>
                 <TableHead className="hidden lg:table-cell">時速</TableHead>
                 <TableHead>メールアドレス</TableHead>
+                <TableHead>従業員名</TableHead>
                 <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
@@ -52,6 +53,7 @@ const TasksTable = ({currentItems, taskItems, setEditingItem, setIsEditDialogOpe
                             <TableCell>{item.kensu}</TableCell>
                             <TableCell className="hidden lg:table-cell">{item.perHour}</TableCell>
                             <TableCell>{item.User.split("@")[0]}</TableCell>
+                            <TableCell>{item.UserName}</TableCell>
                             <TableCell>
                             <Button 
                                 className={disableEdit ? "invisible" : 'hover:bg-gray-200'} 
