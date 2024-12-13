@@ -79,19 +79,14 @@ export const fetchItems = async ({startDate, endDate, searchEmail, taskNumbers }
         })
     }
 
-    /*
     if(taskNumbers.length){
         conditions.push({
-            "$or": taskNumbers.map(taskNum => ({
-                column: "task",
-                operator: "=",
-                value: taskNum
-            }))
+            "column": "task",
+            "operator": "in",
+            "value": taskNumbers
         })
     }
-    */
-    console.log(taskNumbers)
-    console.log(conditions)
+
     const payload = {
         table_name,
         "conditions": conditions,
