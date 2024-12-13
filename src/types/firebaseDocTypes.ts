@@ -23,7 +23,7 @@ export interface postItemType {
 export interface listItemType {
     id: number;
     createDate: string;
-    task: number;
+    task: number | null;
     startTime: string;
     endTime: string;
     kensu: number;

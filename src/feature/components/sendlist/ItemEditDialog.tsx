@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,8 +17,25 @@ type ChildComponentProps = {
 
 const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditingItem, taskItems}: ChildComponentProps) => {
 
+    const [ selectTeam, setSelectTeam ] = useState<string>("")
+    const taskTeams = [...new Set(taskItems.map(item => item.teamName))]
+
+    useEffect(() => {
+        const team = taskItems.filter(item => item.id === editingItem?.task)[0]
+        if(team){
+            setSelectTeam(team.teamName)
+        }
+    },[taskItems, editingItem])
+
     const handleEditSave = async() => {
         if(!editingItem){
+            return
+        }
+
+        const timeChk1 = editingItem.startTime >= editingItem.endTime;
+        const timeChk2 = editingItem.startTime === "";
+        if(editingItem.task === null || editingItem.task === undefined || timeChk1 || timeChk2){
+            window.alert("入力内容を確認してください")
             return
         }
 
@@ -34,6 +52,11 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
                 item.id === newData.data.id ? { ...newData.data } : { ...item }
             )
         );
+    }
+
+    const selectedTeam = (value: string) => {
+        setSelectTeam(value)
+        setEditingItem({...editingItem!, task: null})
     }
 
     return (
@@ -71,6 +94,30 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-task" className="text-right">
+                チーム名
+                </Label>
+                <Select
+                value={selectTeam}
+                onValueChange={(value) => selectedTeam(value)}
+                >
+                <SelectTrigger id="edit-task" className="col-span-3">
+                    <SelectValue placeholder="チーム名を選択" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-100">
+                    {taskTeams?.map((item,index) => {
+                        return(
+                            <SelectItem 
+                                key={index} 
+                                value={item} 
+                                className= "hover:border-y border-black hover:brightness-110"
+                            >{item}</SelectItem>
+                        )
+                    })}
+                </SelectContent>
+                </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-task" className="text-right">
                 業務項目
                 </Label>
                 <Select
@@ -81,11 +128,14 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
                     <SelectValue placeholder="業務項目を選択" />
                 </SelectTrigger>
                 <SelectContent>
-                    {taskItems?.map((item,index) => {
+                    {taskItems?.filter(item => {
+                        return item.teamName === selectTeam
+                    }).map((item,index) => {
                         return(
                             <SelectItem 
                                 key={index} 
                                 value={String(item.id)} 
+                                className= "hover:border-y border-black hover:brightness-110"
                                 style={{"backgroundColor": item.color}}
                             >{item.taskName}</SelectItem>
                         )
