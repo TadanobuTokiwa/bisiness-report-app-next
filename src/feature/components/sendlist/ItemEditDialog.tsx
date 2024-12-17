@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { updateItem } from '@/lib/firebase/firebaseStoreFunctions'
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
+import { updateItem } from '@/lib/api/items'
 import { listItemType, taskItemType } from "@/types/firebaseDocTypes"
 
 type ChildComponentProps = {
@@ -16,41 +17,69 @@ type ChildComponentProps = {
 
 const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditingItem, taskItems}: ChildComponentProps) => {
 
+    const [ selectTeam, setSelectTeam ] = useState<string>("")
+    const taskTeams = [...new Set(taskItems.map(item => item.teamName))]
+
+    useEffect(() => {
+        const team = taskItems.filter(item => item.id === editingItem?.task)[0]
+        if(team){
+            setSelectTeam(team.teamName)
+        }
+    },[taskItems, editingItem])
+
     const handleEditSave = async() => {
-        const {newItem, error} = await updateItem(editingItem!)
-        
-        if(error && !newItem){
-            window.alert("エラーが発生しました。")
+        if(!editingItem){
             return
         }
 
-        const updateTask = {
-            date: newItem.createDate,
-            task: newItem.task,
-            startTime: newItem.startTime,
-            endTime: newItem.endTime,
-            workingHour: newItem.workingHour,
-            kensu: newItem.kensu,
-            perHour: newItem.perHour,
-            userName: editingItem!.userName,
-            docID: editingItem!.docID
+        const timeChk1 = editingItem.startTime >= editingItem.endTime;
+        const timeChk2 = editingItem.startTime === "";
+        if(editingItem.task === null || editingItem.task === undefined || timeChk1 || timeChk2){
+            window.alert("入力内容を確認してください")
+            return
+        }
+
+        const {responseData, newData} = await updateItem(editingItem)
+        
+        if(!responseData.success){
+            window.alert("エラーが発生しました。")
+            return
         }
 
         setIsEditDialogOpen(false);
         setAllItems(prevItems =>
             prevItems.map(item =>
-                item.docID === updateTask!.docID ? { ...updateTask } : { ...item }
+                item.id === newData.data.id ? { ...newData.data } : { ...item }
             )
         );
+    }
+
+    const selectedTeam = (value: string) => {
+        setSelectTeam(value)
+        setEditingItem({...editingItem!, task: null})
     }
 
     return (
         <DialogContent className='bg-slate-50'>
         <DialogHeader>
             <DialogTitle>項目の編集</DialogTitle>
+            <DialogDescription>
+                編集後、保存ボタンを押してください
+            </DialogDescription>
         </DialogHeader>
         {editingItem && (
             <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="task-id" className="text-right">
+                ID
+                </Label>
+                <Input
+                id="task-id"
+                value={editingItem.id}
+                className="col-span-3"
+                disabled
+                />
+            </div>
             <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-date" className="text-right">
                 日付
@@ -58,28 +87,55 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
                 <Input
                 id="edit-date"
                 type="date"
-                value={editingItem.date}
-                onChange={(e) => setEditingItem({...editingItem, date: e.target.value})}
+                value={editingItem.createDate}
+                onChange={(e) => setEditingItem({...editingItem, createDate: e.target.value})}
                 className="col-span-3"
                 />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-task" className="text-right">
+                チーム名
+                </Label>
+                <Select
+                value={selectTeam}
+                onValueChange={(value) => selectedTeam(value)}
+                >
+                <SelectTrigger id="edit-task" className="col-span-3">
+                    <SelectValue placeholder="チーム名を選択" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-100">
+                    {taskTeams?.map((item,index) => {
+                        return(
+                            <SelectItem 
+                                key={index} 
+                                value={item} 
+                                className= "hover:border-y border-black hover:brightness-110"
+                            >{item}</SelectItem>
+                        )
+                    })}
+                </SelectContent>
+                </Select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-task" className="text-right">
                 業務項目
                 </Label>
                 <Select
-                value={editingItem.task}
-                onValueChange={(value) => setEditingItem({...editingItem, task: value})}
+                value={String(editingItem.task)}
+                onValueChange={(value) => setEditingItem({...editingItem, task: Number(value)})}
                 >
                 <SelectTrigger id="edit-task" className="col-span-3">
                     <SelectValue placeholder="業務項目を選択" />
                 </SelectTrigger>
                 <SelectContent>
-                    {taskItems?.map((item,index) => {
+                    {taskItems?.filter(item => {
+                        return item.teamName === selectTeam
+                    }).map((item,index) => {
                         return(
                             <SelectItem 
                                 key={index} 
                                 value={String(item.id)} 
+                                className= "hover:border-y border-black hover:brightness-110"
                                 style={{"backgroundColor": item.color}}
                             >{item.taskName}</SelectItem>
                         )

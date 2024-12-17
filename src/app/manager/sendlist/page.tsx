@@ -42,7 +42,7 @@ const SendList = () => {
                 allTaskItems={allTaskItems}
                 allItems={allItems}
                 setCurrentPage={setCurrentPage}
-                userName="ALL"
+                userEmail="ALL"
             />
             <TasksTable
                 currentItems={currentItems}
@@ -50,6 +50,7 @@ const SendList = () => {
                 setEditingItem={setEditingItem}
                 setIsEditDialogOpen={setIsEditDialogOpen}
                 manager={true}
+                isLoading={isLoading}
             />
             <ListFooter
                 isLoading={isLoading}

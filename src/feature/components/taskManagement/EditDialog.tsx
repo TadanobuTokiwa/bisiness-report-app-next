@@ -1,4 +1,4 @@
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -7,6 +7,7 @@ import { taskItemType } from "@/types/firebaseDocTypes"
 
 type ChildComponentProps = {
     editingTask: taskItemType | null;
+    addedItems: (taskItemType | null)[];
     setTasks: React.Dispatch<React.SetStateAction<(taskItemType | null)[]>>;
     setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
     setEditingTask: React.Dispatch<React.SetStateAction<taskItemType | null>>
@@ -16,7 +17,8 @@ type ChildComponentProps = {
 };
 
 const EditDialog = ({
-        editingTask, 
+        editingTask,
+        addedItems,
         setTasks, 
         setIsEditDialogOpen, 
         setEditingTask, 
@@ -44,7 +46,8 @@ const EditDialog = ({
         setIsEditDialogOpen(false)
         setEditingTask(null)
         
-        if(editingTask.docID === ""){
+        const is_added = addedItems.filter(addedItem => addedItem && addedItem.id === editingTask.id).length
+        if(is_added){
             setAddedItems((prevItems) =>
                 prevItems.map((task) =>
                     task!.id === editingTask!.id ? editingTask : task
@@ -66,6 +69,9 @@ const EditDialog = ({
         <DialogContent className='bg-slate-50'>
         <DialogHeader>
             <DialogTitle>業務項目の編集</DialogTitle>
+            <DialogDescription>
+                編集後、保存ボタンを押してください
+            </DialogDescription>
         </DialogHeader>
         {editingTask && (
             <div className="grid gap-4 py-4">
@@ -112,6 +118,34 @@ const EditDialog = ({
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-task-name" className="text-right">
+                チーム名
+                </Label>
+                <Input
+                id="new-task-name"
+                value={editingTask.teamName}
+                onChange={(e) =>
+                    setEditingTask({ ...editingTask, teamName: e.target.value })
+                }
+                maxLength={5}
+                className="col-span-3"
+                />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-task-name" className="text-right">
+                業務項目種別
+                </Label>
+                <Input
+                id="new-task-name"
+                value={editingTask.taskType}
+                onChange={(e) =>
+                    setEditingTask({ ...editingTask, taskType: e.target.value })
+                }
+                maxLength={6}
+                className="col-span-3"
+                />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="task-color" className="text-right">
                 背景色
                 </Label>
@@ -143,9 +177,9 @@ const EditDialog = ({
                 <div className="col-span-3 flex items-center space-x-2">
                 <Checkbox
                     id="task-visible"
-                    checked={editingTask.chk}
+                    checked={editingTask.chk !== 0}
                     onCheckedChange={(checked: boolean) =>
-                    setEditingTask({ ...editingTask, chk: checked })
+                    setEditingTask({ ...editingTask, chk: checked ? 1 : 0 })
                     }
                 />
                 <label htmlFor="task-visible" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -157,7 +191,7 @@ const EditDialog = ({
         )}
         <DialogFooter>
             <div className='w-full border border-black text-center bg-gray-100 hover:bg-gray-200'>
-                <Button onClick={() => handleSave()}>保存</Button>
+                <Button className="w-full" onClick={() => handleSave()}>保存</Button>
             </div>
         </DialogFooter>
         </DialogContent>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Dialog } from "@/components/ui/dialog"
 import ProtectedRoute from '../../protectedRoute'
 import { taskItemType } from '@/types/firebaseDocTypes'
-import { fetchAllTasks } from '@/lib/firebase/firebaseStoreFunctions'
+import { fetchAllTasks } from '@/lib/api/tasks'
 import TaskManageTable from '@/feature/components/taskManagement/TaskManageTable'
 import TaskManageFooter from '@/feature/components/taskManagement/TaskManageFooter'
 import EditDialog from '@/feature/components/taskManagement/EditDialog'
@@ -60,6 +60,7 @@ const TaskManagement = () => {
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <EditDialog 
                     editingTask={editingTask} 
+                    addedItems={addedItems}
                     setTasks={setTasks}
                     setIsEditDialogOpen={setIsEditDialogOpen} 
                     setEditingTask={setEditingTask}

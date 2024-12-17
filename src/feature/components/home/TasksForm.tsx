@@ -7,25 +7,34 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { addItem } from "@/lib/firebase/firebaseStoreFunctions";
 import { postItemType, taskItemType } from "@/types/firebaseDocTypes";
 import { useAuth } from "@/context/AuthContext";
 import { useTasks } from "@/hooks/useTasks";
+import { addItem } from "@/lib/api/items";
 
+interface tasks {
+    id: number;
+    task: string;
+    startTime: string;
+    endTime: string;
+    kensu: number;
+    team: string;
+}
 interface updateTaskAction{
     id: number;
-    field: string;
+    field: keyof tasks;
     value: string | number;
 }
 
 type ChildComponentProps = {
     cardMoved: boolean;
     setCardMoved: React.Dispatch<React.SetStateAction<boolean>>;
-    postUserName: string;
+    postUserEmail: string;
     postDate: string;
+    userName: string;
 };
 
-const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildComponentProps) => {
+const TasksForm = ({cardMoved, setCardMoved, postUserEmail, postDate, userName}: ChildComponentProps) => {
 
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false)
@@ -33,11 +42,13 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
     const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     const { tasks } = useAppSelector((store) => store.tasks);
     const dispatch = useDispatch()
-    const { userName } = useAuth();
-    const postName = postUserName === "" && userName ? userName : postUserName
+    const { user } = useAuth();
+    const postEmail = postUserEmail === "" && user?.email ? user.email : postUserEmail
+    const postName = userName === "" && user?.displayName ? user.displayName : userName
 
     const { data } = useTasks();
     const taskItems: taskItemType[] = data ? data.filter(item => item.chk) : []
+    const taskTeams = [...new Set(taskItems.map(item => item.teamName))]
 
     const editTask = ({id, field, value}: updateTaskAction) => {
         if((field === "startTime" || field === "endTime") && typeof value === "string" && value.split(":").length === 3){
@@ -62,6 +73,11 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
         dispatch(addTask())
     }
 
+    const teamNameCheanged = (id: number, value: string) => {
+        editTask({id, field: 'team', value});
+        editTask({id, field: 'task', value: ""})
+    }
+
     const handleSubmit = async() => {
         const chkList = tasks.filter(task => task.startTime >= task.endTime);
         const chkList2 = tasks.filter(task => task.task === "");
@@ -69,7 +85,7 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
             window.alert("入力内容を確認してください");
             return
         }
-        if(!userName){
+        if(!postEmail){
             window.alert("ユーザー情報を確認してください");
             return
         }
@@ -85,11 +101,12 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                 const perHour = task.kensu === 0 ? 0 : Math.floor(Math.pow(10,2) * (task.kensu / (diff / (60*60*1000)))) / Math.pow(10,2);
                 const newTask: postItemType = {
                     "createDate": date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,'0') + "-" + String(date.getDate()).padStart(2,'0'),
-                    "task": task.task,
+                    "task": Number(task.task),
                     "startTime": task.startTime,
                     "endTime": task.endTime,
-                    "kensu": task.kensu,
-                    "User": postName,
+                    "kensu": Number(task.kensu),
+                    "User": postEmail,
+                    "UserName": postName,
                     "workingHour": Math.floor(Math.pow(10,3) * (diff / (60*60*1000))) / Math.pow(10,3),
                     "perHour": perHour,
                     "DateTimeNum": Number(String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2,'0') + String(date.getDate()).padStart(2,'0') + String(task.startTime.replaceAll(":","")))
@@ -118,6 +135,25 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                 {tasks.map((task) => (
                     <div key={task.id} className="flex flex-col md:flex-row items-start md:items-center gap-2 p-2 rounded-md">
                     <Select
+                        value={task.team}
+                        onValueChange={(value) => teamNameCheanged(task.id, value)}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="チームを選択" />
+                        </SelectTrigger>
+                        <SelectContent className='bg-gray-100'>
+                            {taskTeams?.map((item,index) => {
+                                return(
+                                    <SelectItem 
+                                        key={index} 
+                                        value={item} 
+                                        className="hover:border-y border-black hover:brightness-110"
+                                    >{item}</SelectItem>
+                                )
+                            })}
+                        </SelectContent>
+                    </Select>
+                    <Select
                         value={task.task}
                         onValueChange={(value) => editTask({id: task.id, field: 'task', value})}
                     >
@@ -125,11 +161,14 @@ const TasksForm = ({cardMoved, setCardMoved, postUserName, postDate}: ChildCompo
                             <SelectValue placeholder="タスクを選択" />
                         </SelectTrigger>
                         <SelectContent className='bg-gray-100'>
-                            {taskItems?.map((item,index) => {
+                            {taskItems?.filter(item => {
+                                return item.teamName === task.team
+                            }).map((item,index) => {
                                 return(
                                     <SelectItem 
                                         key={index} 
                                         value={String(item.id)} 
+                                        className="hover:border-y border-black hover:brightness-110"
                                         style={{"backgroundColor": item.color}}
                                     >{item.taskName}</SelectItem>
                                 )

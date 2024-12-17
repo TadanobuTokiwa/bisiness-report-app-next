@@ -6,19 +6,20 @@ interface tasks {
     startTime: string;
     endTime: string;
     kensu: number;
+    team: string;
 }
 interface initialState {
     tasks: tasks[];
 }
 interface updateTaskAction{
     id: number;
-    field: string;
+    field: keyof tasks;
     value: string | number;
 }
 
 const initialState: initialState = {
     tasks: [
-        { id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
+        { id: 1, team: '', task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
     ]
 }
 
@@ -30,6 +31,7 @@ const taskSlice = createSlice({
             const beforeTime = state.tasks[state.tasks.length - 1].endTime
             const newTask = { 
                 id: Math.floor(Math.random() * 10000000), 
+                team: '',
                 task: '', 
                 startTime: beforeTime, 
                 endTime: beforeTime, 
@@ -43,17 +45,20 @@ const taskSlice = createSlice({
             }
         },
         updateTask: (state, action: PayloadAction<updateTaskAction>) => {
-            state.tasks = state.tasks.map(task => {
-                return (
-                    task.id === action.payload.id ? 
-                    { ...task, [action.payload.field]: action.payload.value } : 
-                    task
-                )
-            })
+            const { id, field, value } = action.payload
+            if(field in state.tasks[0]) {
+                state.tasks = state.tasks.map(task => {
+                    return (
+                        task.id === id ? 
+                        { ...task, [field]: value } : 
+                        task
+                    )
+                })
+            }
         },
         resetTask: (state) => {
             state.tasks = [
-                { id: 1, task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
+                { id: 1, team: '', task: '', startTime: '09:00', endTime: '09:00', kensu: 0 }
             ]
         },
         createTemplate: (state, action: PayloadAction<tasks[]>) => {

@@ -1,4 +1,4 @@
-import { fetchAllTasks } from '@/lib/firebase/firebaseStoreFunctions';
+import { fetchAllTasks } from '@/lib/api/tasks';
 import { taskItemType } from '@/types/firebaseDocTypes';
 import { useQuery } from '@tanstack/react-query';
 

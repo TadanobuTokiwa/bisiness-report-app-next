@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { addTaskManager, updateTaskManager } from "@/lib/firebase/firebaseStoreFunctions";
+import { addTaskManager, updateTaskManager } from "@/lib/api/tasks";
 import { taskItemType } from "@/types/firebaseDocTypes";
 import { useRouter } from "next/navigation"
 
@@ -33,21 +33,26 @@ const TaskManageFooter = ({
             orderNum: Math.max(...tasks.map(t => t!.orderNum)) + 1,
             taskName: '',
             color: '#bbdefb',
-            chk: true,
-            docID: "",
+            chk: 1,
+            teamName: '',
+            taskType: '',
         })
     }
 
     const handleSaveAll = () => {
-        addedItems.forEach(item => {
-            addTaskManager(item!)
-        })
-        setAddedItems([])
+        if(addedItems.length){
+            const newTasks = addedItems.filter(item => item !== null)
+            addTaskManager(newTasks)
+            setAddedItems([])
+        }
 
-        changedItems.forEach(item => {
-            updateTaskManager(item!)
-        })
-        setChangedItems([])
+        if(changedItems.length){
+            const editTasks = changedItems.filter(item => item !== null)
+            updateTaskManager(editTasks)
+            setChangedItems([])
+        }
+
+        window.alert("保存完了しました")
     }
 
     const handleReturn = () => {
