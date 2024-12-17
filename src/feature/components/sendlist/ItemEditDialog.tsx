@@ -17,6 +17,7 @@ type ChildComponentProps = {
 
 const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditingItem, taskItems}: ChildComponentProps) => {
 
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ selectTeam, setSelectTeam ] = useState<string>("")
     const taskTeams = [...new Set(taskItems.map(item => item.teamName))]
 
@@ -39,14 +40,17 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
             return
         }
 
+        setIsLoading(true)
         const {responseData, newData} = await updateItem(editingItem)
         
         if(!responseData.success){
+            setIsLoading(false)
             window.alert("エラーが発生しました。")
             return
         }
 
         setIsEditDialogOpen(false);
+        setIsLoading(false)
         setAllItems(prevItems =>
             prevItems.map(item =>
                 item.id === newData.data.id ? { ...newData.data } : { ...item }
@@ -184,7 +188,14 @@ const ItemEditDialog = ({editingItem, setIsEditDialogOpen, setAllItems, setEditi
             </div>
         )}
             <DialogFooter>
-                <Button className='w-full bg-blue-600 text-white hover:bg-blue-700' type="submit" onClick={handleEditSave}>保存</Button>
+                <Button 
+                    className='w-full bg-blue-600 text-white hover:bg-blue-700'
+                    type="submit"
+                    onClick={handleEditSave}
+                    disabled={isLoading}
+                >
+                    {isLoading ? "保存中..." : "保存"}
+                </Button>
             </DialogFooter>
         </DialogContent>
     )
