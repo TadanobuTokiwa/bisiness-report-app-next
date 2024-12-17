@@ -63,6 +63,11 @@ export const fetchItems = async ({startDate, endDate, searchEmail, taskNumbers }
             "operator": ">=",
             "value": `${startDate.replaceAll("-", "")}0000`
         },
+        {
+            "column": "is_active",
+            "operator": "=",
+            "value": "1"
+        },
     ]
 
     if(searchEmail !== "ALL"){
