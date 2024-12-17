@@ -9,7 +9,7 @@ type propsType = {
 export const downloadCSV = ({data, allTaskItems, filename}: propsType) => {
     if (!data || !data.length) return;
 
-    const headers = ["日付", "業務項目", "開始時間", "終了時間", "業務時間", "件数", "時速", "従業員名", "メールアドレス", "業務項目種別", "チームの業務"];
+    const headers = ["ID", "日付", "業務項目", "開始時間", "終了時間", "業務時間", "件数", "時速", "従業員名", "メールアドレス", "業務項目種別", "チームの業務"];
 
     const rows = data.map((item) => {
         const taskItem = allTaskItems?.filter(taskItem => taskItem.id === item.task)
@@ -17,6 +17,7 @@ export const downloadCSV = ({data, allTaskItems, filename}: propsType) => {
         const taskTeam = taskItem.length === 1 ? taskItem[0].teamName ? taskItem[0].teamName : "" : ""
         const taskType = taskItem.length === 1 ? taskItem[0].taskType ? taskItem[0].taskType : "" : ""
         return ([
+            item.id,
             item.createDate,
             taskName,
             item.startTime,

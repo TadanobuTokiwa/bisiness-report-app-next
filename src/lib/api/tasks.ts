@@ -14,7 +14,12 @@ export const fetchTasks = async (): Promise<taskItemType[]> => {
                 "column": "chk",
                 "operator": "==",
                 "value": true
-            }
+            },
+            {
+                "column": "is_active",
+                "operator": "=",
+                "value": "1"
+            },
         ],
         "order_by": {
             "column": "orderNum",
@@ -52,7 +57,13 @@ export const fetchAllTasks = async (): Promise<taskItemType[]> => {
 
     const payload = {
         table_name,
-        "conditions": [],
+        "conditions": [
+            {
+                "column": "is_active",
+                "operator": "=",
+                "value": "1"
+            },
+        ],
     };
 
     try {
