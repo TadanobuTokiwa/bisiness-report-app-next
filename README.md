@@ -9,7 +9,7 @@
 ### 機能一覧
 
 - 業務報告: 1日行った業務を各業務項目ごとに  
-    1,業務内容 2,開始時間 3,終了時間 4,件数  
+    1,業務内容(チーム名,業務項目) 2,開始時間 3,終了時間 4,件数  
     を記載し投稿します
 
 - リスト機能: 日付、従業員名、タスク項目名で検索を行い、業務内容を確認できます  
@@ -23,14 +23,14 @@
 
 | 項目  | 言語・フレームワーク |
 | ------------- | -------------- |
-| Language      | TypeScript                            |   
-| Front-end     | Next.js (App Router)                  |  
-| Global State  | Redux (Redux Toolkit, Redux Persist)  |  
-| Server State  | React Query                           |  
-| Back-end      | Firebase (Firestore Database)         |  
-| Authentication| Firebase (Authentication)             |  
-| Style         | shadcn/ui , Tailwind CSS              |  
-| Hosting       | Vercel                                |   
+| Language      | TypeScript                                |   
+| Front-end     | Next.js (App Router)                      |  
+| Global State  | Redux (Redux Toolkit, Redux Persist)      |  
+| Server State  | React Query                               |  
+| Back-end      | Firebase (Firestore Database), phpMyAdmin |  
+| Authentication| Firebase (Authentication)                 |  
+| Style         | shadcn/ui , Tailwind CSS                  |  
+| Hosting       | Vercel                                    |   
 
 ## インストール方法
 
@@ -58,9 +58,10 @@
 `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`  
 `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`  
 `NEXT_PUBLIC_FIREBASE_APP_ID`  
+`NEXT_PUBLIC_API_TOKEN`  
 
-全てFirebaseの機能と連携するためのKeyです  
-※ FirebaseのCRUD操作は `lib/firebase/firebaseStoreFunctions.ts` で管理しています
+NEXT_PUBLIC_FIREBASE_○○ はFirebaseの機能と連携するためのKeyです  
+NEXT_PUBLIC_API_TOKEN はラボに作成していただいたDBにアクセスするためのトークンです  
 
 ## アプリ操作方法  
 
