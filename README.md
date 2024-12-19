@@ -26,7 +26,7 @@
 | Language      | TypeScript                                |   
 | Front-end     | Next.js (App Router)                      |  
 | Global State  | Redux (Redux Toolkit, Redux Persist)      |  
-| Server State  | React Query                               |  
+| Server State  | TanStack Query                            |  
 | Back-end      | Firebase (Firestore Database), phpMyAdmin |  
 | Authentication| Firebase (Authentication)                 |  
 | Style         | shadcn/ui , Tailwind CSS                  |  
