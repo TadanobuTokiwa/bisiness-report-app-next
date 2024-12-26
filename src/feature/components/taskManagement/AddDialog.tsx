@@ -27,7 +27,7 @@ const addDialog = ({
 
     const handleAddSave = () => {
 
-        if(!newTask || !newTask.id || !newTask.orderNum || !newTask.taskName){
+        if(!newTask || !newTask.id || !newTask.orderNum || !newTask.taskName || !newTask.taskType || !newTask.teamName){
             window.alert("入力内容を確認してください");
             return
         }
