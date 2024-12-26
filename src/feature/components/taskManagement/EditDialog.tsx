@@ -29,7 +29,7 @@ const EditDialog = ({
 
     const handleSave = () => {
 
-        if(!editingTask || !editingTask.id || !editingTask.orderNum || !editingTask.taskName){
+        if(!editingTask || !editingTask.id || !editingTask.orderNum || !editingTask.taskName || !editingTask.taskType || !editingTask.teamName){
             window.alert("入力内容を確認してください");
             return
         }
