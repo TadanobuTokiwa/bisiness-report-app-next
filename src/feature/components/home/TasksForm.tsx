@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Clock, Trash2, Plus, Send, Loader } from 'lucide-react'
+import { Trash2, Plus, Send, Loader } from 'lucide-react'
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { addTask, removeTask, resetTask, updateTask } from '@/store/slices/TaskForm';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -177,7 +177,6 @@ const TasksForm = ({cardMoved, setCardMoved, postUserEmail, postDate, userName}:
                     </Select>
                     <div className="flex flex-wrap md:flex-nowrap justify-around gap-2 w-full md:w-3/4">
                         <div className="flex items-center gap-2 md:w-auto">
-                        <Clock className="w-4 h-4 text-muted-foreground" />
                         <div className="flex items-center gap-2">
                             <Input
                             type="time"
