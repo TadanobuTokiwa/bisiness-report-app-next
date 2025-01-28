@@ -59,9 +59,11 @@
 `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`  
 `NEXT_PUBLIC_FIREBASE_APP_ID`  
 `NEXT_PUBLIC_API_TOKEN`  
+`NEXT_PUBLIC_ALLOWED_EMAILS`  
 
 NEXT_PUBLIC_FIREBASE_○○ はFirebaseの機能と連携するためのKeyです  
 NEXT_PUBLIC_API_TOKEN はラボに作成していただいたDBにアクセスするためのトークンです  
+NEXT_PUBLIC_ALLOWED_EMAILS は@rext.work以外のドメインでログインを許可するメールアドレスを管理  
 
 ## アプリ操作方法  
 
