@@ -27,10 +27,19 @@ const Login = () => {
     },[])
 
     const handleGoogleLogin = async() => {
+
+        const allowedEmails = process.env.NEXT_PUBLIC_ALLOWED_EMAILS?.split(",") || [];
+
         if(!auth) return
         const result = await signInWithPopup(auth, googleProvider)
         const user = result.user
-        if(!user?.email || user?.email.slice(-10) !== "@rext.work"){
+        if(
+            !user?.email || 
+            (
+                user?.email.slice(-10) !== "@rext.work" && 
+                !allowedEmails.includes(user.email)
+            )
+        ){
             window.alert("rextのアカウントを使用してください")
             return
         }
