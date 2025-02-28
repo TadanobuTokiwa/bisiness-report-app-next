@@ -37,6 +37,7 @@ const Login = () => {
             !user?.email || 
             (
                 user?.email.slice(-10) !== "@rext.work" && 
+                user?.email.slice(-25) !== "@buysell-technologies.com" &&
                 !allowedEmails.includes(user.email)
             )
         ){
